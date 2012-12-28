@@ -6,7 +6,10 @@ import com.jgoodies.forms.layout.*;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
-	private static boolean autoMode;
+	public int blackNum = 2, whiteNum = 2, emptyNum = 60;
+	// turn: true black, false white
+	public boolean turn = true;
+	public Piece[][] panel = new Piece[8][8];
 
 	public Main() {
 		super("黑白棋");
@@ -21,41 +24,44 @@ public class Main extends JFrame {
 		RowSpec[] rowSpec = new RowSpec[8];
 		for (int i = 0; i < 8; i++)
 			rowSpec[i] = RowSpec.decode("default:grow");
-		getContentPane().setLayout(new FormLayout(colSpec, rowSpec));
+		Container contentPane = getContentPane();
+		contentPane.setLayout(new FormLayout(colSpec, rowSpec));
 
 		// Add pieces
-		Piece[][] panel = new Piece[8][8];
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++) {
-				panel[i][j] = new Piece(new Coordinate(i, j));
-				getContentPane().add(panel[i][j],
-						(i + 1) + ", " + (j + 1) + ", fill, fill");
+				panel[i][j] = new Piece(this, new Coordinate(i, j));
+				contentPane.add(panel[i][j], (i + 1) + ", " + (j + 1)
+						+ ", fill, fill");
 			}
+		
+		// Add info panel
+		Info infoWindow=new Info(this);
+		infoWindow.setVisible(true);
 	}
 
 	public static void main(String[] args) {
 		// Choose manual or AI
-		String player1 = (String) JOptionPane.showInputDialog(null, "黑方：",
+		String blackPlayer = (String) JOptionPane.showInputDialog(null, "黑方：",
 				"请选择", JOptionPane.QUESTION_MESSAGE, null, Invoker.list,
 				Invoker.list[0]);
-		if (player1 == null)
+		if (blackPlayer == null)
 			System.exit(0);
-		String player2 = (String) JOptionPane.showInputDialog(null, "白方：",
+		String whitePlayer = (String) JOptionPane.showInputDialog(null, "白方：",
 				"请选择", JOptionPane.QUESTION_MESSAGE, null, Invoker.list,
 				Invoker.list[0]);
-		if (player2 == null)
+		if (whitePlayer == null)
 			System.exit(0);
-		
+
 		// Initialize the players
-		autoMode=Invoker.initPlayer(player1,player2);
-		
+		Invoker.initPlayer(blackPlayer, whitePlayer);
+
 		// Show the chessboard
 		Chessboard.initialize();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Main frame = new Main();
-					frame.setIconImage(new ImageIcon("").getImage());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, "启动失败", "错误",
