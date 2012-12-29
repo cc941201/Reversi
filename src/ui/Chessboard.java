@@ -13,7 +13,7 @@ public class Chessboard {
 	}
 
 	public void add(Main frame, Coordinate c, boolean[][] yours,
-			boolean[][] enemys) {
+			boolean[][] enemys, Coordinate[] pieces) {
 		yours[c.x][c.y] = true;
 		frame.panel[c.x][c.y].repaint();
 		emptyNum--;
@@ -21,38 +21,21 @@ public class Chessboard {
 			blackNum++;
 		else
 			whiteNum++;
-		int x, y;
-		for (int i = -1; i < 2; i++)
-			for (int j = -1; j < 2; j++) {
-				if ((i == 0) && (j == 0))
-					continue;
-				x = c.x + i;
-				y = c.y + j;
-				while ((x >= 0) && (x < 8) && (y >= 0) && (y < 8)
-						&& enemys[x][y]) {
-					x += i;
-					y += j;
-				}
-				if ((x >= 0) && (x < 8) && (y >= 0) && (y < 8) && yours[x][y]) {
-					x = c.x + i;
-					y = c.y + j;
-					while ((x >= 0) && (x < 8) && (y >= 0) && (y < 8)
-							&& enemys[x][y]) {
-						yours[x][y] = true;
-						enemys[x][y] = false;
-						frame.panel[x][y].repaint();
-						if (turn) {
-							blackNum++;
-							whiteNum--;
-						} else {
-							whiteNum++;
-							blackNum--;
-						}
-						x += i;
-						y += j;
-					}
+		for (int i = 0; i < pieces.length; i++) {
+			if (pieces[i] != null) {
+				yours[pieces[i].x][pieces[i].y] = true;
+				enemys[pieces[i].x][pieces[i].y] = false;
+				frame.panel[pieces[i].x][pieces[i].y].turn=false;
+				frame.panel[pieces[i].x][pieces[i].y].repaint();
+				if (turn) {
+					blackNum++;
+					whiteNum--;
+				} else {
+					whiteNum++;
+					blackNum--;
 				}
 			}
+		}
 		turn = !turn;
 		Info.updateLabel(frame);
 	}

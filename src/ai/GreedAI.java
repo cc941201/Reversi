@@ -2,6 +2,7 @@ package ai;
 
 import ui.AI;
 import ui.Coordinate;
+import ui.Determine;
 
 public class GreedAI implements AI {
 
@@ -19,7 +20,7 @@ public class GreedAI implements AI {
 		}
 		for (i = 0; i < 8; i++) {
 			for (j = 0; j < 8; j++) {
-				if (Judge.Can(new Coordinate(i, j), yours, enemys)) {
+				if (Determine.judge(new Coordinate(i, j), yours, enemys).length!=0) {
 					interest[i][j] = 0;
 					for (n = 0; n < 3; n++) {
 						for (m = 0; m < 3; m++) {
