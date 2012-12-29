@@ -6,9 +6,11 @@ import com.jgoodies.forms.layout.*;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
-	// turn: true black, false white
 	public Piece[][] panel = new Piece[8][8];
 	public Chessboard board = new Chessboard();
+	public boolean moving = false, finished = false;
+	// winner: 1 black, -1 white, 0 tie
+	public int winner = 0;
 
 	public Main() {
 		super("黑白棋");

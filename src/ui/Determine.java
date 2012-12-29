@@ -57,16 +57,31 @@ public class Determine {
 	}
 
 	public static boolean canMove(boolean[][] yours, boolean[][] enemys) {
-		boolean t = true;
+		boolean t = false;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++)
-				if (judge(new Coordinate(i, j), yours, enemys).length == 0) {
-					t = false;
+				if (judge(new Coordinate(i, j), yours, enemys).length != 0) {
+					t = true;
 					break;
 				}
-			if (!t)
+			if (t)
 				break;
 		}
 		return t;
+	}
+
+	// flag: 1 win, 0 tie, -1 lose
+	public static boolean finished(Main frame, Chessboard board) {
+		boolean flag;
+		if ((board.emptyNum == 0) || (board.blackNum == 0)
+				|| (board.whiteNum == 0)) {
+			flag = true;
+			if (board.blackNum > board.whiteNum)
+				frame.winner = 1;
+			if (board.blackNum < board.whiteNum)
+				frame.winner = -1;
+		} else
+			flag = false;
+		return flag;
 	}
 }
