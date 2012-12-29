@@ -1,25 +1,26 @@
 package ui;
 
 public class Chessboard {
-	public static boolean[][] black = new boolean[8][8],
-			white = new boolean[8][8];
+	public boolean turn = true;
+	public int blackNum = 2, whiteNum = 2, emptyNum = 60;
+	public boolean[][] black = new boolean[8][8], white = new boolean[8][8];
 
-	public static void initialize() {
+	public Chessboard() {
 		black[3][3] = true;
 		black[4][4] = true;
 		white[3][4] = true;
 		white[4][3] = true;
 	}
 
-	public static void add(Main frame, Coordinate c, boolean[][] yours,
+	public void add(Main frame, Coordinate c, boolean[][] yours,
 			boolean[][] enemys) {
 		yours[c.x][c.y] = true;
 		frame.panel[c.x][c.y].repaint();
-		frame.emptyNum--;
-		if (frame.turn)
-			frame.blackNum++;
+		emptyNum--;
+		if (turn)
+			blackNum++;
 		else
-			frame.whiteNum++;
+			whiteNum++;
 		int x, y;
 		for (int i = -1; i < 2; i++)
 			for (int j = -1; j < 2; j++) {
@@ -40,20 +41,19 @@ public class Chessboard {
 						yours[x][y] = true;
 						enemys[x][y] = false;
 						frame.panel[x][y].repaint();
-						if (frame.turn) {
-							frame.blackNum++;
-							frame.whiteNum--;
-						}
-						else {
-							frame.whiteNum++;
-							frame.blackNum--;
+						if (turn) {
+							blackNum++;
+							whiteNum--;
+						} else {
+							whiteNum++;
+							blackNum--;
 						}
 						x += i;
 						y += j;
 					}
 				}
 			}
-		frame.turn = !frame.turn;
+		turn = !turn;
 		Info.updateLabel(frame);
 	}
 }

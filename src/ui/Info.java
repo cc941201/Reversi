@@ -18,12 +18,13 @@ public class Info extends JFrame {
 
 	public static void updateLabel(Main frame) {
 		String side;
-		if (frame.turn)
+		if (frame.board.turn)
 			side = "黑";
 		else
 			side = "白";
 		label.setText("<html><b>等待" + side + "方</b><br><br><br><b>黑方：</b>"
-				+ frame.blackNum + "<br><b>白方：</b>" + frame.whiteNum
-				+ "<br><br><b>空余：</b>" + frame.emptyNum + "</html>");
+				+ frame.board.blackNum + "<br><b>白方：</b>"
+				+ frame.board.whiteNum + "<br><br><b>空余：</b>"
+				+ frame.board.emptyNum + "</html>");
 	}
 }

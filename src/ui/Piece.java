@@ -22,19 +22,18 @@ public class Piece extends JPanel implements MouseListener {
 		int width = getWidth(), height = getHeight();
 		if (focus) {
 			boolean[][] yours, enemys;
-			if (frame.turn) {
-				yours = Chessboard.black;
-				enemys = Chessboard.white;
+			if (frame.board.turn) {
+				yours = frame.board.black;
+				enemys = frame.board.white;
 			} else {
-				yours = Chessboard.white;
-				enemys = Chessboard.black;
+				yours = frame.board.white;
+				enemys = frame.board.black;
 			}
 			if (Judge.Can(c, yours, enemys))
 				g.setColor(UIManager.getColor("Focus.color"));
 			else
 				g.setColor(UIManager.getColor("Button.select"));
-		}
-		else
+		} else
 			g.setColor(Color.lightGray);
 		g.fillRect(0, 0, width, height);
 		g.setColor(Color.black);
@@ -42,9 +41,9 @@ public class Piece extends JPanel implements MouseListener {
 			g.drawLine(0, 0, 0, height);
 		if (c.y != 0)
 			g.drawLine(0, 0, width, 0);
-		if (Chessboard.black[c.x][c.y])
+		if (frame.board.black[c.x][c.y])
 			g.fillOval(width / 10, height / 10, width / 5 * 4, height / 5 * 4);
-		if (Chessboard.white[c.x][c.y]) {
+		if (frame.board.white[c.x][c.y]) {
 			g.setColor(Color.white);
 			g.fillOval(width / 10, height / 10, width / 5 * 4, height / 5 * 4);
 		}
@@ -53,15 +52,15 @@ public class Piece extends JPanel implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		boolean[][] yours, enemys;
-		if (frame.turn) {
-			yours = Chessboard.black;
-			enemys = Chessboard.white;
+		if (frame.board.turn) {
+			yours = frame.board.black;
+			enemys = frame.board.white;
 		} else {
-			yours = Chessboard.white;
-			enemys = Chessboard.black;
+			yours = frame.board.white;
+			enemys = frame.board.black;
 		}
 		if (Judge.Can(c, yours, enemys))
-			Chessboard.add(frame, c, yours, enemys);
+			frame.board.add(frame, c, yours, enemys);
 	}
 
 	@Override

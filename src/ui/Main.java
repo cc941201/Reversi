@@ -6,10 +6,9 @@ import com.jgoodies.forms.layout.*;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
-	public int blackNum = 2, whiteNum = 2, emptyNum = 60;
 	// turn: true black, false white
-	public boolean turn = true;
 	public Piece[][] panel = new Piece[8][8];
+	public Chessboard board = new Chessboard();
 
 	public Main() {
 		super("黑白棋");
@@ -34,9 +33,9 @@ public class Main extends JFrame {
 				contentPane.add(panel[i][j], (i + 1) + ", " + (j + 1)
 						+ ", fill, fill");
 			}
-		
+
 		// Add info panel
-		Info infoWindow=new Info(this);
+		Info infoWindow = new Info(this);
 		infoWindow.setVisible(true);
 	}
 
@@ -57,7 +56,6 @@ public class Main extends JFrame {
 		Invoker.initPlayer(blackPlayer, whitePlayer);
 
 		// Show the chessboard
-		Chessboard.initialize();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
