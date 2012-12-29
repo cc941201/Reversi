@@ -77,50 +77,63 @@ public class Piece extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		boolean[][] yours, enemys;
-		if (frame.board.turn) {
-			yours = frame.board.black;
-			enemys = frame.board.white;
-		} else {
-			yours = frame.board.white;
-			enemys = frame.board.black;
+		if (!frame.moving) {
+			focus = false;
+			boolean[][] yours, enemys;
+			if (frame.board.turn) {
+				yours = frame.board.black;
+				enemys = frame.board.white;
+			} else {
+				yours = frame.board.white;
+				enemys = frame.board.black;
+			}
+			Coordinate[] pieces = Determine.judge(c, yours, enemys);
+			if (pieces.length != 0) {
+				for (int i = 0; i < pieces.length; i++)
+					if (pieces[i] != null) {
+						frame.panel[pieces[i].x][pieces[i].y].turn = false;
+						frame.panel[pieces[i].x][pieces[i].y].repaint();
+					}
+				frame.board.add(frame, c, yours, enemys, pieces);
+			}
 		}
-		Coordinate[] pieces = Determine.judge(c, yours, enemys);
-		if (pieces.length != 0)
-			frame.board.add(frame, c, yours, enemys, pieces);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		focus = true;
-		update(getGraphics());
-		boolean[][] yours, enemys;
-		if (frame.board.turn) {
-			yours = frame.board.black;
-			enemys = frame.board.white;
-		} else {
-			yours = frame.board.white;
-			enemys = frame.board.black;
+		if (!frame.moving) {
+			focus = true;
+			repaint();
+			boolean[][] yours, enemys;
+			if (frame.board.turn) {
+				yours = frame.board.black;
+				enemys = frame.board.white;
+			} else {
+				yours = frame.board.white;
+				enemys = frame.board.black;
+			}
+			Coordinate[] pieces = Determine.judge(c, yours, enemys);
+			if (pieces.length != 0)
+				for (int i = 0; i < pieces.length; i++)
+					if (pieces[i] != null) {
+						frame.panel[pieces[i].x][pieces[i].y].turn = true;
+						frame.panel[pieces[i].x][pieces[i].y].repaint();
+					}
 		}
-		Coordinate[] pieces = Determine.judge(c, yours, enemys);
-		if (pieces.length != 0)
-			for (int i = 0; i < pieces.length; i++)
-				if (pieces[i] != null) {
-					frame.panel[pieces[i].x][pieces[i].y].turn=true;
-					frame.panel[pieces[i].x][pieces[i].y].repaint();
-				}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		focus = false;
-		update(getGraphics());
-		for (int i=0;i<8;i++)
-			for (int j=0;j<8;j++)
-				if (frame.panel[i][j].turn) {
-					frame.panel[i][j].turn=false;
-					frame.panel[i][j].repaint();
-				}
+		if (!frame.moving) {
+			focus = false;
+			repaint();
+			for (int i = 0; i < 8; i++)
+				for (int j = 0; j < 8; j++)
+					if (frame.panel[i][j].turn) {
+						frame.panel[i][j].turn = false;
+						frame.panel[i][j].repaint();
+					}
+		}
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package ui;
 
+import java.util.*;
+
 public class Chessboard {
+	// turn: true black, false white
 	public boolean turn = true;
 	public int blackNum = 2, whiteNum = 2, emptyNum = 60;
 	public boolean[][] black = new boolean[8][8], white = new boolean[8][8];
@@ -21,22 +24,13 @@ public class Chessboard {
 			blackNum++;
 		else
 			whiteNum++;
-		for (int i = 0; i < pieces.length; i++) {
+		new Timer().schedule(new MoveTimer(frame, yours, enemys, pieces, this),
+				200);
+		for (int i = 0; i < pieces.length; i++)
 			if (pieces[i] != null) {
-				yours[pieces[i].x][pieces[i].y] = true;
-				enemys[pieces[i].x][pieces[i].y] = false;
-				frame.panel[pieces[i].x][pieces[i].y].turn=false;
-				frame.panel[pieces[i].x][pieces[i].y].repaint();
-				if (turn) {
-					blackNum++;
-					whiteNum--;
-				} else {
-					whiteNum++;
-					blackNum--;
-				}
+
 			}
-		}
-		turn = !turn;
+		frame.moving = true;
 		Info.updateLabel(frame);
 	}
 }
