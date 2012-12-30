@@ -30,7 +30,6 @@ public class Chessboard {
 			if (pieces[i] != null) {
 
 			}
-		frame.moving = true;
 		Info.updateLabel(frame);
 	}
 }

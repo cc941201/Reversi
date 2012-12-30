@@ -8,7 +8,7 @@ import com.jgoodies.forms.layout.*;
 public class Main extends JFrame {
 	public Piece[][] panel = new Piece[8][8];
 	public Chessboard board = new Chessboard();
-	public boolean moving = false, finished = false;
+	public boolean controllable = false, finished = false;
 	// winner: 1 black, -1 white, 0 tie
 	public int winner = 0;
 
@@ -39,6 +39,9 @@ public class Main extends JFrame {
 		// Add info panel
 		Info infoWindow = new Info(this);
 		infoWindow.setVisible(true);
+
+		// Invoke
+		Invoker.invoke(this, board);
 	}
 
 	public static void main(String[] args) {

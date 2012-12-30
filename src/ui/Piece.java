@@ -4,13 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import ai.Determine;
+
 @SuppressWarnings("serial")
 public class Piece extends JPanel implements MouseListener {
 	private Coordinate c;
 	private Main frame;
-	private boolean focus;
-	public boolean turn;
-	private Color halfBlackBlue = new Color(0x375E82),
+	private boolean focus = false;
+	public boolean turn = false;
+	private final Color halfBlackBlue = new Color(0x375E82),
 			halfWhiteBlue = new Color(0xBDD7F0), halfBlackRed = new Color(
 					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9);
 
@@ -77,7 +79,7 @@ public class Piece extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (!frame.moving) {
+		if (frame.controllable) {
 			focus = false;
 			boolean[][] yours, enemys;
 			if (frame.board.turn) {
@@ -101,7 +103,7 @@ public class Piece extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		if (!frame.moving) {
+		if (frame.controllable) {
 			focus = true;
 			repaint();
 			boolean[][] yours, enemys;
@@ -124,7 +126,7 @@ public class Piece extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		if (!frame.moving) {
+		if (frame.controllable) {
 			focus = false;
 			repaint();
 			for (int i = 0; i < 8; i++)

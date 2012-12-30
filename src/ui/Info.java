@@ -34,15 +34,14 @@ public class Info extends JFrame implements ActionListener {
 				line = "白方赢了";
 			else
 				line = "平局";
-		} else if (frame.moving)
-			line = "请稍候...";
-		else {
+		} else if (frame.controllable) {
 			if (frame.board.turn)
 				side = "黑";
 			else
 				side = "白";
 			line = "等待" + side + "方...";
-		}
+		} else
+			line = "请稍候...";
 		label.setText("<html><b>" + line + "</b><br><br><br><b>黑方：</b>"
 				+ frame.board.blackNum + "个<br><b>白方：</b>"
 				+ frame.board.whiteNum + "个<br><br><b>空余：</b>"

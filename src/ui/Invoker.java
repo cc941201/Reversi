@@ -1,5 +1,7 @@
 package ui;
 
+import javax.swing.JOptionPane;
+
 import ai.*;
 
 public class Invoker {
@@ -17,7 +19,7 @@ public class Invoker {
 			blackIsHuman = true;
 			break;
 		case 1:
-			blackPlayer = new RandonAI();
+			blackPlayer = new RandomAI();
 			break;
 		case 2:
 			blackPlayer = new GreedAI();
@@ -27,10 +29,44 @@ public class Invoker {
 			whiteIsHuman = true;
 			break;
 		case 1:
-			whitePlayer = new RandonAI();
+			whitePlayer = new RandomAI();
 			break;
 		case 2:
 			whitePlayer = new GreedAI();
+		}
+	}
+
+	public static void invoke(Main frame, Chessboard board) {
+		if (board.turn)
+			if (blackIsHuman) {
+				frame.controllable = true;
+				Info.updateLabel(frame);
+			}
+			else {
+				Coordinate move = blackPlayer.move(board.black, board.white);
+				Coordinate[] pieces = Determine.judge(move, board.black,
+						board.white);
+				if (pieces.length == 0) {
+					JOptionPane.showMessageDialog(frame, "黑方AI作弊", "错误",
+							JOptionPane.ERROR_MESSAGE);
+					System.exit(-1);
+				} else
+					board.add(frame, move, board.black, board.white, pieces);
+			}
+		else if (whiteIsHuman) {
+			frame.controllable = true;
+			Info.updateLabel(frame);
+		}
+		else {
+			Coordinate move = whitePlayer.move(board.white, board.black);
+			Coordinate[] pieces = Determine.judge(move, board.white,
+					board.black);
+			if (pieces.length == 0) {
+				JOptionPane.showMessageDialog(frame, "白方AI作弊", "错误",
+						JOptionPane.ERROR_MESSAGE);
+				System.exit(-1);
+			} else
+				board.add(frame, move, board.white, board.black, pieces);
 		}
 	}
 }

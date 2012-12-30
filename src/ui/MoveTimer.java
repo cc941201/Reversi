@@ -4,6 +4,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JPanel;
 
+import ai.Determine;
+
 public class MoveTimer extends TimerTask {
 	private Main frame;
 	private boolean[][] yours;
@@ -37,14 +39,21 @@ public class MoveTimer extends TimerTask {
 	private class Finish extends TimerTask {
 		@Override
 		public void run() {
-			frame.moving = false;
+			frame.controllable = false;
 			if (Determine.canMove(enemys, yours))
 				board.turn = !board.turn;
-			else if (Determine.finished(frame, board)) {
+			else if ((board.emptyNum == 0) || (board.blackNum == 0)
+					|| (board.whiteNum == 0)
+					|| !Determine.canMove(yours, enemys)) {
 				frame.finished = true;
-				frame.moving = true;
+				if (board.blackNum > board.whiteNum)
+					frame.winner = 1;
+				if (board.blackNum < board.whiteNum)
+					frame.winner = -1;
 			}
 			Info.updateLabel(frame);
+			if (!frame.finished)
+				Invoker.invoke(frame, board);
 		}
 	}
 
@@ -70,6 +79,10 @@ public class MoveTimer extends TimerTask {
 				timer.schedule(new RepaintTimer(
 						frame.panel[pieces[i].x][pieces[i].y], board), time);
 			}
-		timer.schedule(new Finish(), time + 100);
+		if (Invoker.blackIsHuman || Invoker.whiteIsHuman)
+			time += 100;
+		else
+			time += 500;
+		timer.schedule(new Finish(), time);
 	}
 }
