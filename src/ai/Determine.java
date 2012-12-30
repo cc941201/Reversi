@@ -1,4 +1,6 @@
-package ui;
+package ai;
+
+import ui.Coordinate;
 
 public class Determine {
 	public static Coordinate[] judge(Coordinate c, boolean[][] yours,
@@ -68,20 +70,5 @@ public class Determine {
 				break;
 		}
 		return t;
-	}
-
-	// flag: 1 win, 0 tie, -1 lose
-	public static boolean finished(Main frame, Chessboard board) {
-		boolean flag;
-		if ((board.emptyNum == 0) || (board.blackNum == 0)
-				|| (board.whiteNum == 0)) {
-			flag = true;
-			if (board.blackNum > board.whiteNum)
-				frame.winner = 1;
-			if (board.blackNum < board.whiteNum)
-				frame.winner = -1;
-		} else
-			flag = false;
-		return flag;
 	}
 }
