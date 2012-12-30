@@ -96,6 +96,7 @@ public class Piece extends JPanel implements MouseListener {
 						frame.panel[pieces[i].x][pieces[i].y].turn = false;
 						frame.panel[pieces[i].x][pieces[i].y].repaint();
 					}
+				frame.infoWindow.undoButton.setEnabled(false);
 				frame.board.add(frame, c, yours, enemys, pieces);
 			}
 		}

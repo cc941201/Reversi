@@ -17,6 +17,7 @@ public class Chessboard {
 
 	public void add(Main frame, Coordinate c, boolean[][] yours,
 			boolean[][] enemys, Coordinate[] pieces) {
+		frame.history.add(frame);
 		yours[c.x][c.y] = true;
 		frame.panel[c.x][c.y].repaint();
 		emptyNum--;
@@ -24,12 +25,24 @@ public class Chessboard {
 			blackNum++;
 		else
 			whiteNum++;
-		new Timer().schedule(new MoveTimer(frame, yours, enemys, pieces, this),
-				200);
+		new Timer().schedule(new MoveTimer(frame, yours, enemys, pieces), 200);
 		for (int i = 0; i < pieces.length; i++)
 			if (pieces[i] != null) {
 
 			}
-		Info.updateLabel(frame);
+		frame.infoWindow.updateLabel(frame);
+	}
+	
+	public Chessboard clone() {
+		Chessboard board=new Chessboard();
+		board.turn=this.turn;
+		board.blackNum=this.blackNum;
+		board.whiteNum=this.whiteNum;
+		board.emptyNum=this.emptyNum;
+		for (int i=0;i<8;i++) {
+			board.black[i]=this.black[i].clone();
+			board.white[i]=this.white[i].clone();
+		}
+		return board;
 	}
 }

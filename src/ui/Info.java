@@ -1,15 +1,14 @@
 package ui;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
-public class Info extends JFrame implements ActionListener {
-	public static JLabel label = new JLabel();
-	private Main frame;
+public class Info extends JFrame {
+	private JLabel label = new JLabel();
+	public JButton undoButton;
 
 	public Info(Main frame) {
 		super("状态");
@@ -19,13 +18,20 @@ public class Info extends JFrame implements ActionListener {
 		label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		getContentPane().add(label, BorderLayout.CENTER);
 
-		this.frame = frame;
+		JPanel panel = new JPanel();
+		getContentPane().add(panel, BorderLayout.SOUTH);
+
+		undoButton = new JButton("撤销");
+		undoButton.addActionListener(new Undo(frame));
+		undoButton.setEnabled(false);
+		panel.add(undoButton);
+
 		JButton restartButton = new JButton("重新开始");
-		restartButton.addActionListener(this);
-		getContentPane().add(restartButton, BorderLayout.NORTH);
+		restartButton.addActionListener(new Restart(frame));
+		panel.add(restartButton);
 	}
 
-	public static void updateLabel(Main frame) {
+	public void updateLabel(Main frame) {
 		String side, line;
 		if (frame.finished) {
 			if (frame.winner == 1)
@@ -48,11 +54,33 @@ public class Info extends JFrame implements ActionListener {
 				+ frame.board.emptyNum + "个<br><br></html>");
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		this.dispose();
-		frame.dispose();
-		frame = new Main();
-		frame.setVisible(true);
+	private class Restart implements ActionListener {
+		private Main frame;
+
+		public Restart(Main frame) {
+			this.frame = frame;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			frame.infoWindow.dispose();
+			frame.dispose();
+			frame = new Main();
+			frame.setVisible(true);
+		}
+	}
+
+	private class Undo implements ActionListener {
+		private Main frame;
+
+		public Undo(Main frame) {
+			this.frame = frame;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			frame.infoWindow.undoButton.setEnabled(false);
+			frame.history.undo(frame);
+		}
 	}
 }
