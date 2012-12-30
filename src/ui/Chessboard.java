@@ -25,7 +25,7 @@ public class Chessboard {
 			blackNum++;
 		else
 			whiteNum++;
-		new Timer().schedule(new MoveTimer(frame, yours, enemys, pieces), 200);
+		new Timer().schedule(new Move(frame, yours, enemys, pieces), 200);
 		frame.infoWindow.updateLabel(frame);
 	}
 	

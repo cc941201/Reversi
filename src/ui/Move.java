@@ -6,16 +6,16 @@ import javax.swing.JPanel;
 
 import ai.Determine;
 
-public class MoveTimer extends TimerTask {
+public class Move extends TimerTask {
 	private Main frame;
 	private boolean[][] yours;
 	private boolean[][] enemys;
 	private Coordinate[] pieces;
 
-	private class RepaintTimer extends TimerTask {
+	private class Repaint extends TimerTask {
 		private JPanel panel;
 
-		public RepaintTimer(JPanel panel) {
+		public Repaint(JPanel panel) {
 			this.panel = panel;
 		}
 
@@ -54,7 +54,7 @@ public class MoveTimer extends TimerTask {
 		}
 	}
 
-	public MoveTimer(Main frame, boolean[][] yours, boolean[][] enemys,
+	public Move(Main frame, boolean[][] yours, boolean[][] enemys,
 			Coordinate[] pieces) {
 		this.frame = frame;
 		this.yours = yours;
@@ -72,7 +72,7 @@ public class MoveTimer extends TimerTask {
 			else {
 				yours[pieces[i].x][pieces[i].y] = true;
 				enemys[pieces[i].x][pieces[i].y] = false;
-				timer.schedule(new RepaintTimer(
+				timer.schedule(new Repaint(
 						frame.panel[pieces[i].x][pieces[i].y]), time);
 			}
 		if (frame.invoke.blackIsHuman || frame.invoke.whiteIsHuman)
