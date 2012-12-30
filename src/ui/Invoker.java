@@ -7,7 +7,7 @@ import ai.*;
 public class Invoker {
 	private static AI blackPlayer, whitePlayer;
 	public static boolean blackIsHuman = false, whiteIsHuman = false;
-	public static String[] list = { "0. 玩家", "1. 随机AI", "2. 简单的贪心AI" };
+	public static final String[] list = { "0. 玩家", "1. 随机AI", "2. 简单的贪心AI" };
 
 	public static void initPlayer(String blackPlayerString,
 			String whitePlayerString) {
