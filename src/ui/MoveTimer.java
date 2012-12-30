@@ -39,14 +39,14 @@ public class MoveTimer extends TimerTask {
 			frame.controllable = false;
 			if (Determine.canMove(enemys, yours))
 				frame.board.turn = !frame.board.turn;
-			else if ((frame.board.emptyNum == 0) || (frame.board.blackNum == 0)
-					|| (frame.board.whiteNum == 0)
-					|| !Determine.canMove(yours, enemys)) {
+			else if (!Determine.canMove(yours, enemys)) {
 				frame.finished = true;
 				if (frame.board.blackNum > frame.board.whiteNum)
 					frame.winner = 1;
 				if (frame.board.blackNum < frame.board.whiteNum)
 					frame.winner = -1;
+				if (frame.invoke.blackIsHuman || frame.invoke.whiteIsHuman)
+					frame.infoWindow.undoButton.setEnabled(true);
 			}
 			frame.infoWindow.updateLabel(frame);
 			if (!frame.finished)
