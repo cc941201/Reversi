@@ -8,6 +8,9 @@ import com.jgoodies.forms.layout.*;
 public class Main extends JFrame {
 	public Piece[][] panel = new Piece[8][8];
 	public Chessboard board = new Chessboard();
+	public History history = new History();
+	public Info infoWindow;
+	public Invoker invoke;
 	public boolean controllable = false, finished = false;
 	// winner: 1 black, -1 white, 0 tie
 	public int winner = 0;
@@ -17,6 +20,21 @@ public class Main extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 500);
 		setMinimumSize(new Dimension(500, 500));
+
+		// Choose manual or AI
+		String blackPlayer = (String) JOptionPane.showInputDialog(null, "黑方：",
+				"请选择", JOptionPane.QUESTION_MESSAGE, null, Invoker.list,
+				Invoker.list[0]);
+		if (blackPlayer == null)
+			System.exit(0);
+		String whitePlayer = (String) JOptionPane.showInputDialog(null, "白方：",
+				"请选择", JOptionPane.QUESTION_MESSAGE, null, Invoker.list,
+				Invoker.list[0]);
+		if (whitePlayer == null)
+			System.exit(0);
+
+		// Initialize the players
+		invoke = new Invoker(blackPlayer, whitePlayer);
 
 		// Form Layout
 		ColumnSpec[] colSpec = new ColumnSpec[8];
@@ -37,40 +55,20 @@ public class Main extends JFrame {
 			}
 
 		// Add info panel
-		Info infoWindow = new Info(this);
+		infoWindow = new Info(this);
 		infoWindow.setVisible(true);
 
 		// Invoke
-		Invoker.invoke(this, board);
+		invoke.invoke(this);
 	}
 
 	public static void main(String[] args) {
-		// Choose manual or AI
-		String blackPlayer = (String) JOptionPane.showInputDialog(null, "黑方：",
-				"请选择", JOptionPane.QUESTION_MESSAGE, null, Invoker.list,
-				Invoker.list[0]);
-		if (blackPlayer == null)
-			System.exit(0);
-		String whitePlayer = (String) JOptionPane.showInputDialog(null, "白方：",
-				"请选择", JOptionPane.QUESTION_MESSAGE, null, Invoker.list,
-				Invoker.list[0]);
-		if (whitePlayer == null)
-			System.exit(0);
-
-		// Initialize the players
-		Invoker.initPlayer(blackPlayer, whitePlayer);
-
-		// Show the chessboard
+		// Launch
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
-				try {
-					Main frame = new Main();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, "启动失败", "错误",
-							JOptionPane.ERROR_MESSAGE);
-					System.exit(-1);
-				}
+				Main frame = new Main();
+				frame.setVisible(true);
 			}
 		});
 	}
