@@ -80,7 +80,13 @@ public class Piece extends JPanel implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (frame.controllable) {
-			focus = false;
+			for (int i = 0; i < 8; i++)
+				for (int j = 0; j < 8; j++)
+					if (frame.panel[i][j].turn || frame.panel[i][j].focus) {
+						frame.panel[i][j].turn = false;
+						frame.panel[i][j].focus = false;
+						frame.panel[i][j].repaint();
+					}
 			boolean[][] yours, enemys;
 			if (frame.board.turn) {
 				yours = frame.board.black;
@@ -91,11 +97,7 @@ public class Piece extends JPanel implements MouseListener {
 			}
 			Coordinate[] pieces = Determine.judge(c, yours, enemys);
 			if (pieces.length != 0) {
-				for (int i = 0; i < pieces.length; i++)
-					if (pieces[i] != null) {
-						frame.panel[pieces[i].x][pieces[i].y].turn = false;
-						frame.panel[pieces[i].x][pieces[i].y].repaint();
-					}
+				frame.controllable=false;
 				frame.infoWindow.undoButton.setEnabled(false);
 				frame.board.add(frame, c, yours, enemys, pieces);
 			}
@@ -127,16 +129,14 @@ public class Piece extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		if (frame.controllable) {
-			focus = false;
-			repaint();
+		if (frame.controllable)
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
-					if (frame.panel[i][j].turn) {
+					if (frame.panel[i][j].turn || frame.panel[i][j].focus) {
 						frame.panel[i][j].turn = false;
+						frame.panel[i][j].focus = false;
 						frame.panel[i][j].repaint();
 					}
-		}
 	}
 
 	@Override
