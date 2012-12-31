@@ -1,8 +1,8 @@
 package ui;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.event.*;
 
 import ai.Determine;
 
@@ -10,18 +10,18 @@ import ai.Determine;
 public class Piece extends JPanel implements MouseListener {
 	private Coordinate c;
 	private Main frame;
-	private boolean focus = false;
-	public boolean turn = false;
+	private boolean focus = false, turn = false;
 	private final Color halfBlackBlue = new Color(0x375E82),
 			halfWhiteBlue = new Color(0xBDD7F0), halfBlackRed = new Color(
 					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9);
 
 	public Piece(Main frame, Coordinate c) {
-		addMouseListener(this);
 		this.c = c;
 		this.frame = frame;
+		addMouseListener(this);
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		int width = getWidth(), height = getHeight();
 		if (focus) {
@@ -40,8 +40,8 @@ public class Piece extends JPanel implements MouseListener {
 					g.setColor(halfBlackBlue);
 				else
 					g.setColor(halfWhiteBlue);
-				g.fillOval(width / 10, height / 10, width / 5 * 4,
-						height / 5 * 4);
+				g.fillOval(width / 10, height / 10, width * 4 / 5,
+						height * 4 / 5);
 			} else {
 				g.setColor(UIManager.getColor("Button.select"));
 				g.fillRect(0, 0, width, height);
@@ -51,8 +51,8 @@ public class Piece extends JPanel implements MouseListener {
 						g.setColor(halfBlackRed);
 					else
 						g.setColor(halfWhiteRed);
-					g.fillOval(width / 10, height / 10, width / 5 * 4,
-							height / 5 * 4);
+					g.fillOval(width / 10, height / 10, width * 4 / 5,
+							height * 4 / 5);
 				}
 			}
 		} else {
@@ -64,17 +64,23 @@ public class Piece extends JPanel implements MouseListener {
 		}
 		if (frame.board.black[c.x][c.y]) {
 			g.setColor(Color.black);
-			g.fillOval(width / 10, height / 10, width / 5 * 4, height / 5 * 4);
+			g.fillOval(width / 10, height / 10, width * 4 / 5, height * 4 / 5);
 		}
 		if (frame.board.white[c.x][c.y]) {
 			g.setColor(Color.white);
-			g.fillOval(width / 10, height / 10, width / 5 * 4, height / 5 * 4);
+			g.fillOval(width / 10, height / 10, width * 4 / 5, height * 4 / 5);
 		}
 		g.setColor(Color.black);
 		if (c.x != 0)
 			g.drawLine(0, 0, 0, height);
 		if (c.y != 0)
 			g.drawLine(0, 0, width, 0);
+		if (c.equals(frame.board.last)) {
+			if (frame.board.black[c.x][c.y])
+				g.setColor(Color.white);
+			g.drawLine(width / 2, height / 4, width / 2, height * 3 / 4);
+			g.drawLine(width / 4, height / 2, width * 3 / 4, height / 2);
+		}
 	}
 
 	@Override
@@ -97,7 +103,7 @@ public class Piece extends JPanel implements MouseListener {
 			}
 			Coordinate[] pieces = Determine.judge(c, yours, enemys);
 			if (pieces.length != 0) {
-				frame.controllable=false;
+				frame.controllable = false;
 				frame.infoWindow.undoButton.setEnabled(false);
 				frame.board.add(frame, c, yours, enemys, pieces);
 			}

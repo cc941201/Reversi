@@ -1,8 +1,7 @@
 package ui;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import javax.swing.JPanel;
+import java.util.*;
 
 import ai.Determine;
 

@@ -1,9 +1,8 @@
 package ui;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.event.*;
 
 @SuppressWarnings("serial")
 public class Info extends JFrame {
@@ -51,7 +50,8 @@ public class Info extends JFrame {
 		label.setText("<html><b>" + line + "</b><br><br><br><b>黑方：</b>"
 				+ frame.board.blackNum + "个<br><b>白方：</b>"
 				+ frame.board.whiteNum + "个<br><br><b>空余：</b>"
-				+ frame.board.emptyNum + "个<br><br></html>");
+				+ (64 - frame.board.blackNum - frame.board.whiteNum)
+				+ "个<br><br></html>");
 	}
 
 	private class Restart implements ActionListener {
