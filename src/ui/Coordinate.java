@@ -12,7 +12,8 @@ public class Coordinate {
 	@Override
 	public boolean equals(Object a) {
 		boolean t = false;
-		if ((((Coordinate) a).x == x) && (((Coordinate) a).y == y))
+		if ((a instanceof Coordinate) && (((Coordinate) a).x == x)
+				&& (((Coordinate) a).y == y))
 			t = true;
 		return t;
 	}
