@@ -13,7 +13,8 @@ public class Piece extends JPanel implements MouseListener {
 	private boolean focus = false, turn = false;
 	private final Color halfBlackBlue = new Color(0x375E82),
 			halfWhiteBlue = new Color(0xBDD7F0), halfBlackRed = new Color(
-					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9);
+					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9),
+			blue = new Color(0x5D9BD9), red = new Color(0xFF7979);
 
 	public Piece(Main frame, Coordinate c) {
 		this.c = c;
@@ -34,7 +35,7 @@ public class Piece extends JPanel implements MouseListener {
 				enemys = frame.board.black;
 			}
 			if (Determine.judge(c, yours, enemys).length != 0) {
-				g.setColor(UIManager.getColor("Focus.color"));
+				g.setColor(blue);
 				g.fillRect(0, 0, width, height);
 				if (frame.board.turn)
 					g.setColor(halfBlackBlue);
@@ -43,7 +44,7 @@ public class Piece extends JPanel implements MouseListener {
 				g.fillOval(width / 10, height / 10, width * 4 / 5,
 						height * 4 / 5);
 			} else {
-				g.setColor(UIManager.getColor("Button.select"));
+				g.setColor(red);
 				g.fillRect(0, 0, width, height);
 				if (!frame.board.black[c.x][c.y]
 						&& !frame.board.black[c.x][c.y]) {
@@ -57,7 +58,7 @@ public class Piece extends JPanel implements MouseListener {
 			}
 		} else {
 			if (turn)
-				g.setColor(UIManager.getColor("Focus.color"));
+				g.setColor(blue);
 			else
 				g.setColor(Color.lightGray);
 			g.fillRect(0, 0, width, height);
