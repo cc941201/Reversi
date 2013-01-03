@@ -14,7 +14,7 @@ public class Piece extends JPanel implements MouseListener {
 	private final Color halfBlackBlue = new Color(0x375E82),
 			halfWhiteBlue = new Color(0xBDD7F0), halfBlackRed = new Color(
 					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9),
-			blue = new Color(0x5D9BD9), red = new Color(0xFF7979);
+			blue = new Color(0x4B89D0), red = new Color(0xFF6666);
 
 	public Piece(Main frame, Coordinate c) {
 		this.c = c;
