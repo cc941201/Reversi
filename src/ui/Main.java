@@ -22,19 +22,7 @@ public class Main extends JFrame {
 		setMinimumSize(new Dimension(500, 500));
 
 		// Choose manual or AI
-		String blackPlayer = (String) JOptionPane.showInputDialog(null, "黑方：",
-				"请选择", JOptionPane.QUESTION_MESSAGE, null, Invoker.list,
-				Invoker.list[0]);
-		if (blackPlayer == null)
-			System.exit(0);
-		String whitePlayer = (String) JOptionPane.showInputDialog(null, "白方：",
-				"请选择", JOptionPane.QUESTION_MESSAGE, null, Invoker.list,
-				Invoker.list[0]);
-		if (whitePlayer == null)
-			System.exit(0);
-
-		// Initialize the players
-		invoke = new Invoker(blackPlayer, whitePlayer);
+		invoke = new Invoker();
 
 		// Form Layout
 		ColumnSpec[] colSpec = new ColumnSpec[8];
