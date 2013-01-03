@@ -6,7 +6,8 @@ public class Determine {
 	public static Coordinate[] judge(Coordinate c, boolean[][] yours,
 			boolean[][] enemys) {
 		Coordinate[] pieces;
-		if (yours[c.x][c.y] || enemys[c.x][c.y])
+		if ((c.x < 0) || (c.x > 7) || (c.y < 0) || (c.y > 7) || yours[c.x][c.y]
+				|| enemys[c.x][c.y])
 			pieces = new Coordinate[0];
 		else {
 			boolean[][] direction = new boolean[3][3];
