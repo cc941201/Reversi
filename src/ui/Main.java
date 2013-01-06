@@ -7,7 +7,7 @@ import com.jgoodies.forms.layout.*;
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 	public Piece[][] panel = new Piece[8][8];
-	public Chessboard board = new Chessboard();
+	public Chessboard board = new Chessboard(true);
 	public History history = new History();
 	public Info infoWindow;
 	public Invoker invoke;
