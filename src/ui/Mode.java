@@ -17,7 +17,8 @@ public class Mode extends JFrame {
 		setMinimumSize(new Dimension(320, 220));
 		setLocationRelativeTo(null);
 
-		final String[][] aiListTemp = Configure.read("AI"), aiList = new String[2][aiListTemp[1].length + 1], mapList = Configure
+		String[][] aiListTemp = Configure.read("AI");
+		final String[][] aiList = new String[2][aiListTemp[1].length + 1], mapList = Configure
 				.read("Map");
 		aiList[0][0] = "玩家";
 		for (int i = 0; i < aiListTemp[1].length; i++) {
