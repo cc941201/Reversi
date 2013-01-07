@@ -21,14 +21,15 @@ public class Move {
 				frame.infoWindow.updateLabel(frame);
 				frame.repaint();
 			}
-			new Thread() {
-				@Override
-				public void run() {
-					frame.finished = false;
-					frame.board = frame.initialBoard.clone();
-					frame.invoke.invoke(frame);
-				}
-			}.start();
+			if (frame.evaluating)
+				new Thread() {
+					@Override
+					public void run() {
+						frame.finished = false;
+						frame.board = frame.initialBoard.clone();
+						frame.invoke.invoke(frame);
+					}
+				}.start();
 		}
 		if (!frame.finished)
 			frame.invoke.invoke(frame);

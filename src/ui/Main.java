@@ -14,7 +14,7 @@ public class Main extends JFrame {
 	public Evaluate evaluateWindow;
 	public Invoker invoke = new Invoker();
 	public boolean controllable = false, finished = false, evaluate,
-			showBoard = true;
+			showBoard = true, evaluating = true;
 	// winner: 1 black, -1 white, 0 tie
 	public int winner = 0;
 

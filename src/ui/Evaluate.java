@@ -19,6 +19,7 @@ public class Evaluate extends JFrame {
 				frame.evaluateWindow.dispose();
 				frame.infoWindow.dispose();
 				frame.dispose();
+				frame.evaluating = false;
 				new Main();
 			}
 		});
