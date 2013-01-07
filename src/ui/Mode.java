@@ -3,8 +3,6 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Timer;
-import java.util.TimerTask;
 import com.jgoodies.forms.layout.*;
 import com.jgoodies.forms.factories.FormFactory;
 
@@ -140,22 +138,6 @@ public class Mode extends JFrame {
 					Mode.this.dispose();
 					frame.evaluate = evaluateBox.isSelected();
 					frame.start(mapList[1][mapBox.getSelectedIndex()]);
-					if (frame.evaluate) {
-						int i = 1;
-						while (true) {
-							new Timer().schedule(new TimerTask() {
-								@Override
-								public void run() {
-									frame.finished = false;
-									frame.board = new Chessboard(
-											mapList[1][mapBox
-													.getSelectedIndex()]);
-									frame.invoke.invoke(frame);
-								}
-							}, i * 100);
-							i++;
-						}
-					}
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "致命错误", "运行时错误",
 							JOptionPane.ERROR_MESSAGE);

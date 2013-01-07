@@ -17,8 +17,18 @@ public class Move {
 			if (frame.board.blackNum < frame.board.whiteNum)
 				frame.winner = -1;
 			frame.evaluateWindow.updateLabel(frame);
-			frame.infoWindow.updateLabel(frame);
-			frame.repaint();
+			if (frame.showBoard) {
+				frame.infoWindow.updateLabel(frame);
+				frame.repaint();
+			}
+			new Thread() {
+				@Override
+				public void run() {
+					frame.finished = false;
+					frame.board = frame.initialBoard.clone();
+					frame.invoke.invoke(frame);
+				}
+			}.start();
 		}
 		if (!frame.finished)
 			frame.invoke.invoke(frame);

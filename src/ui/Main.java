@@ -8,12 +8,13 @@ import com.jgoodies.forms.layout.*;
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 	public Piece[][] panel = new Piece[8][8];
-	public Chessboard board;
+	public Chessboard board, initialBoard;
 	public History history = new History();
 	public Info infoWindow;
 	public Evaluate evaluateWindow;
 	public Invoker invoke = new Invoker();
-	public boolean controllable = false, finished = false, evaluate;
+	public boolean controllable = false, finished = false, evaluate,
+			showBoard = true;
 	// winner: 1 black, -1 white, 0 tie
 	public int winner = 0;
 
@@ -63,10 +64,11 @@ public class Main extends JFrame {
 		if (!evaluate)
 			infoWindow.updateLabel(this);
 
-		// Add evaluate frame
+		// Add evaluate frame, and backup chessboard
 		if (evaluate) {
 			evaluateWindow = new Evaluate(this);
 			evaluateWindow.updateLabel(this);
+			initialBoard = board.clone();
 		}
 
 		// Invoke

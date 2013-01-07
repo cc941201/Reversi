@@ -112,7 +112,7 @@ public class Piece extends JPanel implements MouseListener {
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
+	public void mouseEntered(MouseEvent e) {
 		if (frame.controllable) {
 			focus = true;
 			repaint();
@@ -135,7 +135,7 @@ public class Piece extends JPanel implements MouseListener {
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
+	public void mouseExited(MouseEvent e) {
 		if (frame.controllable)
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
