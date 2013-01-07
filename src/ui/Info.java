@@ -65,8 +65,7 @@ public class Info extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			frame.infoWindow.dispose();
 			frame.dispose();
-			frame = new Main();
-			frame.setVisible(true);
+			new Main();
 		}
 	}
 

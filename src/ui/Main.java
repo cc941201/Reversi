@@ -7,10 +7,10 @@ import com.jgoodies.forms.layout.*;
 @SuppressWarnings("serial")
 public class Main extends JFrame {
 	public Piece[][] panel = new Piece[8][8];
-	public Chessboard board = new Chessboard(true);
+	public Chessboard board;
 	public History history = new History();
 	public Info infoWindow;
-	public Invoker invoke;
+	public Invoker invoke = new Invoker();
 	public boolean controllable = false, finished = false;
 	// winner: 1 black, -1 white, 0 tie
 	public int winner = 0;
@@ -22,8 +22,18 @@ public class Main extends JFrame {
 		setMinimumSize(new Dimension(500, 500));
 
 		// Choose manual or AI
-		invoke = new Invoker();
+		try {
+			new Mode(this);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "配置文件错误", "错误",
+					JOptionPane.ERROR_MESSAGE);
+			System.exit(-1);
+		}
 
+		getContentPane().add(boardPane());
+	}
+
+	public JPanel boardPane() {
 		// Form Layout
 		ColumnSpec[] colSpec = new ColumnSpec[8];
 		for (int i = 0; i < 8; i++)
@@ -31,23 +41,30 @@ public class Main extends JFrame {
 		RowSpec[] rowSpec = new RowSpec[8];
 		for (int i = 0; i < 8; i++)
 			rowSpec[i] = RowSpec.decode("default:grow");
-		Container contentPane = getContentPane();
-		contentPane.setLayout(new FormLayout(colSpec, rowSpec));
+		JPanel boardPane = new JPanel();
+		boardPane.setLayout(new FormLayout(colSpec, rowSpec));
 
 		// Add pieces
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++) {
 				panel[i][j] = new Piece(this, new Coordinate(i, j));
-				contentPane.add(panel[i][j], (i + 1) + ", " + (j + 1)
+				boardPane.add(panel[i][j], (i + 1) + ", " + (j + 1)
 						+ ", fill, fill");
 			}
 
+		return boardPane;
+	}
+
+	public void start(String map) {
 		// Add info panel
 		infoWindow = new Info(this);
 		infoWindow.setVisible(true);
 
 		// Invoke
 		invoke.invoke(this);
+
+		// Show window
+		setVisible(true);
 	}
 
 	public static void main(String[] args) {
@@ -55,8 +72,7 @@ public class Main extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				Main frame = new Main();
-				frame.setVisible(true);
+				new Main();
 			}
 		});
 	}

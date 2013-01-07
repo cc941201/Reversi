@@ -1,70 +1,13 @@
 package ui;
 
-import java.io.FileReader;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 import ai.*;
 
 public class Invoker {
-	private AI blackPlayer, whitePlayer;
-	public boolean blackIsHuman = false, whiteIsHuman = false;
-
-	public Invoker() {
-		try {
-			FileReader in = new FileReader("AI.conf");
-			Scanner scan = new Scanner(in);
-			int num = 0;
-			while (scan.hasNext()) {
-				if ((scan.nextLine() != "") && (scan.nextLine() != "")) {
-					if (scan.hasNext())
-						scan.nextLine();
-					num++;
-				}
-			}
-			String[] list = new String[num + 1], listClass = new String[num + 1];
-			list[0] = "0. 玩家";
-			scan.close();
-			in.close();
-			in = new FileReader("AI.conf");
-			scan = new Scanner(in);
-			for (int i = 1; i <= num; i++) {
-				list[i] = i + ". " + scan.nextLine();
-				listClass[i] = scan.nextLine();
-				if (scan.hasNext())
-					scan.nextLine();
-			}
-			scan.close();
-			in.close();
-			String blackPlayerString = (String) JOptionPane.showInputDialog(
-					null, "黑方：", "请选择", JOptionPane.QUESTION_MESSAGE, null,
-					list, list[0]);
-			if (blackPlayerString == null)
-				System.exit(0);
-			String whitePlayerString = (String) JOptionPane.showInputDialog(
-					null, "白方：", "请选择", JOptionPane.QUESTION_MESSAGE, null,
-					list, list[0]);
-			if (whitePlayerString == null)
-				System.exit(0);
-			int blackPlayerNum = Integer.parseInt(blackPlayerString.substring(
-					0, 1)), whitePlayerNum = Integer.parseInt(whitePlayerString
-					.substring(0, 1));
-			if (blackPlayerNum == 0)
-				blackIsHuman = true;
-			else
-				blackPlayer = (AI) Class.forName(
-						"ai." + listClass[blackPlayerNum]).newInstance();
-			if (whitePlayerNum == 0)
-				whiteIsHuman = true;
-			else
-				whitePlayer = (AI) Class.forName(
-						"ai." + listClass[whitePlayerNum]).newInstance();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "配置文件错误", "错误",
-					JOptionPane.ERROR_MESSAGE);
-			System.exit(-1);
-		}
-	}
+	public AI blackPlayer, whitePlayer;
+	public boolean blackIsHuman = false, whiteIsHuman = false,
+			evaluate = false;
 
 	public void invoke(Main frame) {
 		if (frame.board.turn)
