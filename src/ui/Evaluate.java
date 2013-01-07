@@ -62,7 +62,7 @@ public class Evaluate extends JFrame {
 		if (num == 0)
 			num = 1;
 		label.setText("<html><b>黑方赢：</b>" + blackWin + "局<br><b>白方赢：</b>"
-				+ whiteWin + "局<br><b>平：</b>" + draw + "局<br><br><b>黑方：</b>"
+				+ whiteWin + "局<br><b>平：</b>" + draw + "局<br><br><b>黑方胜率：</b>"
 				+ blackWin * 100 / num + "%<br><b>白方胜率：</b>" + whiteWin * 100
 				/ num + "%</html>");
 	}
