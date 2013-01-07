@@ -13,7 +13,7 @@ public class Info extends JFrame {
 		super("状态");
 		setBounds(600, 100, 200, 200);
 		setResizable(false);
-		updateLabel(frame);
+
 		label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		getContentPane().add(label, BorderLayout.CENTER);
 
@@ -27,7 +27,11 @@ public class Info extends JFrame {
 
 		JButton restartButton = new JButton("重新开始");
 		restartButton.addActionListener(new Restart(frame));
+		if (frame.evaluate)
+			restartButton.setEnabled(false);
 		panel.add(restartButton);
+
+		setVisible(true);
 	}
 
 	public void updateLabel(Main frame) {

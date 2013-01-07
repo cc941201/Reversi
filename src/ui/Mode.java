@@ -3,6 +3,8 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Timer;
+import java.util.TimerTask;
 import com.jgoodies.forms.layout.*;
 import com.jgoodies.forms.factories.FormFactory;
 
@@ -26,7 +28,7 @@ public class Mode extends JFrame {
 		}
 
 		((JComponent) getContentPane()).setBorder(BorderFactory
-				.createEmptyBorder(10, 10, 10, 10));
+				.createEmptyBorder(0, 10, 10, 10));
 
 		final JPanel mapPane = new JPanel();
 		getContentPane().add(mapPane, BorderLayout.CENTER);
@@ -54,6 +56,7 @@ public class Mode extends JFrame {
 		mapPane.add(frame.boardPane(), BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		getContentPane().add(panel, BorderLayout.WEST);
 		panel.setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec
 				.decode("144px"), }, new RowSpec[] {
@@ -71,10 +74,10 @@ public class Mode extends JFrame {
 		JRadioButton networkButton = new JRadioButton("局域网");
 		networkPane.add(networkButton);
 
-		ButtonGroup networkGroup=new ButtonGroup();
+		ButtonGroup networkGroup = new ButtonGroup();
 		networkGroup.add(localButton);
 		networkGroup.add(networkButton);
-		
+
 		JPanel blackPane = new JPanel();
 		panel.add(blackPane, "1, 2");
 		blackPane.setLayout(new BorderLayout(0, 0));
@@ -100,15 +103,15 @@ public class Mode extends JFrame {
 		final JCheckBox evaluateBox = new JCheckBox("AI评估模式");
 		evaluateBox.setEnabled(false);
 		panel.add(evaluateBox, "1, 4, fill, top");
-		
+
 		class evaluateListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (blackBox.getSelectedIndex()==0||whiteBox.getSelectedIndex()==0) {
+				if (blackBox.getSelectedIndex() == 0
+						|| whiteBox.getSelectedIndex() == 0) {
 					evaluateBox.setSelected(false);
 					evaluateBox.setEnabled(false);
-				}
-				else
+				} else
 					evaluateBox.setEnabled(true);
 			}
 		}
@@ -135,10 +138,28 @@ public class Mode extends JFrame {
 								"ai." + aiList[1][whiteBox.getSelectedIndex()])
 								.newInstance();
 					Mode.this.dispose();
+					frame.evaluate = evaluateBox.isSelected();
 					frame.start(mapList[1][mapBox.getSelectedIndex()]);
+					if (frame.evaluate) {
+						int i = 1;
+						while (true) {
+							new Timer().schedule(new TimerTask() {
+								@Override
+								public void run() {
+									frame.finished = false;
+									frame.board = new Chessboard(
+											mapList[1][mapBox
+													.getSelectedIndex()]);
+									frame.invoke.invoke(frame);
+								}
+							}, i * 100);
+							i++;
+						}
+					}
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "配置文件错误", "错误",
+					JOptionPane.showMessageDialog(null, "致命错误", "运行时错误",
 							JOptionPane.ERROR_MESSAGE);
+					e1.printStackTrace();
 					System.exit(-1);
 				}
 			}

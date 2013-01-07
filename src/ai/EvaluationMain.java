@@ -54,7 +54,7 @@ public class EvaluationMain implements AI {
 						+(double)(deltaStableDiscs[x][y]*current*current)/5
 						+(double)deltaPotentialMobility[x][y]*(double)(64-current)/12
 						+(double)gainATempo[x][y]*250+(double)gainNum/2
-						+(double)EvaluationScore.Score(yours)-2*(double)EvaluationScore.Score(enemysCanMove);
+						+(double)EvaluationScore.Score(yours)-2.5*(double)EvaluationScore.Score(enemysCanMove);
 				if(value[x][y]>max){
 					max=value[x][y];
 					ansX=x;

@@ -35,7 +35,6 @@ public class Chessboard {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "配置文件错误", "错误",
 					JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
 			System.exit(-1);
 		}
 	}
@@ -45,19 +44,23 @@ public class Chessboard {
 
 	public void add(Main frame, Coordinate c, boolean[][] yours,
 			boolean[][] enemys, Coordinate[] pieces) {
-		frame.history.add(frame);
 		yours[c.x][c.y] = true;
-		Coordinate temp = last;
-		last = c;
-		frame.panel[c.x][c.y].repaint();
-		if (temp != null)
-			frame.panel[temp.x][temp.y].repaint();
 		if (turn)
 			blackNum++;
 		else
 			whiteNum++;
-		new Timer().schedule(new Move(frame, yours, enemys, pieces), 200);
-		frame.infoWindow.updateLabel(frame);
+		if (frame.evaluate)
+			Move.move(frame, yours, enemys, pieces);
+		else {
+			frame.history.add(frame);
+			Coordinate temp = last;
+			last = c;
+			frame.panel[c.x][c.y].repaint();
+			if (temp != null)
+				frame.panel[temp.x][temp.y].repaint();
+			new Timer().schedule(new MoveTimer(frame, yours, enemys, pieces), 200);
+			frame.infoWindow.updateLabel(frame);
+		}
 	}
 
 	@Override

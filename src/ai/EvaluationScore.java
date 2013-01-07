@@ -4,13 +4,13 @@ public class EvaluationScore {
 	public static int Score(boolean[][] player){
 		int x,y,ans=0;
 		if(player[0][0])
-			ans+=550;
+			ans+=750;
 		if(player[7][0])
-			ans+=550;
+			ans+=750;
 		if(player[0][7])
-			ans+=550;
+			ans+=750;
 		if(player[7][7])
-			ans+=550;
+			ans+=750;
 		for(x=2;x<6;x++){
 			if(player[x][0])
 				ans+=18;

@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.*;
 import javax.swing.*;
+
 import com.jgoodies.forms.layout.*;
 
 @SuppressWarnings("serial")
@@ -10,8 +11,9 @@ public class Main extends JFrame {
 	public Chessboard board;
 	public History history = new History();
 	public Info infoWindow;
+	public Evaluate evaluateWindow;
 	public Invoker invoke = new Invoker();
-	public boolean controllable = false, finished = false;
+	public boolean controllable = false, finished = false, evaluate;
 	// winner: 1 black, -1 white, 0 tie
 	public int winner = 0;
 
@@ -56,9 +58,16 @@ public class Main extends JFrame {
 	}
 
 	public void start(String map) {
-		// Add info panel
+		// Add info frame
 		infoWindow = new Info(this);
-		infoWindow.setVisible(true);
+		if (!evaluate)
+			infoWindow.updateLabel(this);
+
+		// Add evaluate frame
+		if (evaluate) {
+			evaluateWindow = new Evaluate(this);
+			evaluateWindow.updateLabel(this);
+		}
 
 		// Invoke
 		invoke.invoke(this);
@@ -68,6 +77,11 @@ public class Main extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+		}
+
 		// Launch
 		EventQueue.invokeLater(new Runnable() {
 			@Override

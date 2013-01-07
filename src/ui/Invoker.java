@@ -6,8 +6,7 @@ import ai.*;
 
 public class Invoker {
 	public AI blackPlayer, whitePlayer;
-	public boolean blackIsHuman = false, whiteIsHuman = false,
-			evaluate = false;
+	public boolean blackIsHuman = false, whiteIsHuman = false;
 
 	public void invoke(Main frame) {
 		if (frame.board.turn)
