@@ -17,7 +17,8 @@ public class EvaluateWindow extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				frame.evaluateWindow.dispose();
-				frame.infoWindow.dispose();
+				if (frame.infoWindow != null)
+					frame.infoWindow.dispose();
 				frame.dispose();
 				frame.evaluating = false;
 				new ResetThread(frame).start();

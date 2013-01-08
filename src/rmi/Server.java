@@ -60,8 +60,10 @@ public class Server extends UnicastRemoteObject implements Interface {
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 					null, options, options[0]) == 0)
 				frame.networkBlack = true;
-			frame.remote = remote;
-			remote.connect(!frame.networkBlack, null, this.map);
+			if (!frame.finished) {
+				frame.remote = remote;
+				remote.connect(!frame.networkBlack, null, this.map);
+			}
 		} else {
 			frame.networkBlack = black;
 			frame.board = new Chessboard(map);
@@ -69,7 +71,8 @@ public class Server extends UnicastRemoteObject implements Interface {
 		frame.network = true;
 		if (frame.networkBlack)
 			frame.controllable = true;
-		frame.start();
+		if (!frame.finished)
+			frame.start();
 	}
 
 	@Override
@@ -80,9 +83,12 @@ public class Server extends UnicastRemoteObject implements Interface {
 
 	@Override
 	public void close() throws Exception {
+		frame.finished = true;
+		JOptionPane.getRootFrame().dispose();
 		JOptionPane.showMessageDialog(frame, "对方退出", "游戏停止",
 				JOptionPane.INFORMATION_MESSAGE);
-		frame.infoWindow.dispose();
+		if (frame.infoWindow != null)
+			frame.infoWindow.dispose();
 		frame.dispose();
 		new ResetThread(frame).start();
 	}
