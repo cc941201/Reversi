@@ -17,14 +17,8 @@ public class Mode extends JFrame {
 		setMinimumSize(new Dimension(320, 220));
 		setLocationRelativeTo(null);
 
-		String[][] aiListTemp = Configure.read("AI");
-		final String[][] aiList = new String[2][aiListTemp[1].length + 1], mapList = Configure
-				.read("Map");
-		aiList[0][0] = "玩家";
-		for (int i = 0; i < aiListTemp[1].length; i++) {
-			aiList[0][i + 1] = aiListTemp[0][i];
-			aiList[1][i + 1] = aiListTemp[1][i];
-		}
+		final String[][] aiList = Configure.readAI();
+		final String[] mapList = Configure.readMapList();
 
 		((JComponent) getContentPane()).setBorder(BorderFactory
 				.createEmptyBorder(0, 10, 10, 10));
@@ -39,19 +33,25 @@ public class Mode extends JFrame {
 		JLabel mapBoxLabel = new JLabel("地图：");
 		mapBoxPane.add(mapBoxLabel);
 
-		final JComboBox mapBox = new JComboBox(mapList[0]);
+		final JComboBox mapBox = new JComboBox(mapList);
 		mapBoxLabel.setLabelFor(mapBox);
 		mapBoxPane.add(mapBox);
 		mapBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.board = new Chessboard(mapList[1][mapBox
-						.getSelectedIndex()]);
+				try {
+					frame.board = new Chessboard(mapList[mapBox
+							.getSelectedIndex()]);
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "配置文件错误", "错误",
+							JOptionPane.ERROR_MESSAGE);
+					System.exit(-1);
+				}
 				mapPane.repaint();
 			}
 		});
 
-		frame.board = new Chessboard(mapList[1][0]);
+		frame.board = new Chessboard(mapList[0]);
 		mapPane.add(frame.boardPane(), BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
@@ -138,7 +138,7 @@ public class Mode extends JFrame {
 								.newInstance();
 					Mode.this.dispose();
 					frame.evaluate = evaluateBox.isSelected();
-					frame.start(mapList[1][mapBox.getSelectedIndex()]);
+					frame.start(mapList[mapBox.getSelectedIndex()]);
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "致命错误", "运行时错误",
 							JOptionPane.ERROR_MESSAGE);
