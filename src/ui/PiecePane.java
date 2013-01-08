@@ -11,7 +11,7 @@ public class PiecePane extends JPanel implements MouseListener {
 	private Coordinate c;
 	private Main frame;
 	public boolean focus = false, turn = false;
-	private final Color halfBlackBlue = new Color(0x375E82),
+	private static final Color halfBlackBlue = new Color(0x375E82),
 			halfWhiteBlue = new Color(0xBDD7F0), halfBlackRed = new Color(
 					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9),
 			blue = new Color(0x4B89D0), red = new Color(0xFF6666);
@@ -111,7 +111,7 @@ public class PiecePane extends JPanel implements MouseListener {
 					try {
 						frame.remote.move(c);
 					} catch (Exception e1) {
-						//TODO
+						// TODO
 					}
 			}
 		}

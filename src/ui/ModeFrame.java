@@ -3,12 +3,10 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
 import com.jgoodies.forms.layout.*;
 import com.jgoodies.forms.factories.FormFactory;
-
 import java.rmi.Naming;
-import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.*;
 
 import ai.AI;
 import rmi.*;
@@ -171,10 +169,10 @@ public class ModeFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					LocateRegistry.createRegistry(1099);
+					Registry registry = LocateRegistry.createRegistry(1099);
 					Interface server = new Server();
 					server.setMain(frame);
-					Naming.rebind("reversi", server);
+					registry.rebind("reversi", server);
 					frame.networkHost = true;
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "创建服务器错误", "局域网模式错误",
@@ -187,9 +185,10 @@ public class ModeFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					LocateRegistry.createRegistry(1099);
+					Registry registry = LocateRegistry.createRegistry(1099);
 					Interface server = new Server();
-					Naming.rebind("reversi", server);
+					server.setMain(frame);
+					registry.rebind("reversi", server);
 					Interface call = (Interface) Naming.lookup("//"
 							+ addressField.getText() + "/reversi");
 					call.connect(false, server);

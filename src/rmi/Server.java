@@ -62,7 +62,6 @@ public class Server extends UnicastRemoteObject implements Interface {
 			frame.remote = remote;
 		} else
 			frame.networkBlack = black;
-
 		frame.network = true;
 		if (frame.networkBlack)
 			frame.controllable = true;

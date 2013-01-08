@@ -48,7 +48,7 @@ public class MoveTimer extends TimerTask {
 					frame.infoWindow.undoButton.setEnabled(true);
 			}
 			frame.infoWindow.updateLabel(frame);
-			if (!frame.finished)
+			if (!frame.finished && !frame.network)
 				frame.invoke.invoke(frame);
 		}
 	}
