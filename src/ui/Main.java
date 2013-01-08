@@ -2,8 +2,9 @@ package ui;
 
 import java.awt.*;
 import javax.swing.*;
-
 import com.jgoodies.forms.layout.*;
+
+import rmi.Interface;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
@@ -13,8 +14,10 @@ public class Main extends JFrame {
 	public InfoWindow infoWindow;
 	public EvaluateWindow evaluateWindow;
 	public Invoker invoke = new Invoker();
-	public boolean controllable = false, finished = false, evaluate,
-			showBoard = true, evaluating = true;
+	public Interface remote;
+	public boolean controllable = false, finished = false, evaluate = false,
+			showBoard = true, evaluating = true, network = false,
+			networkBlack = false, networkHost;
 	// winner: 1 black, -1 white, 0 tie
 	public int winner = 0;
 
@@ -58,7 +61,7 @@ public class Main extends JFrame {
 		return boardPane;
 	}
 
-	public void start(String map) {
+	public void start() {
 		// Add info frame
 		infoWindow = new InfoWindow(this);
 		if (!evaluate)
@@ -72,7 +75,8 @@ public class Main extends JFrame {
 		}
 
 		// Invoke
-		invoke.invoke(this);
+		if (!network)
+			invoke.invoke(this);
 
 		// Show window
 		setVisible(true);

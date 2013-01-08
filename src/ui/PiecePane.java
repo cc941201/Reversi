@@ -10,7 +10,7 @@ import ai.Determine;
 public class PiecePane extends JPanel implements MouseListener {
 	private Coordinate c;
 	private Main frame;
-	private boolean focus = false, turn = false;
+	public boolean focus = false, turn = false;
 	private final Color halfBlackBlue = new Color(0x375E82),
 			halfWhiteBlue = new Color(0xBDD7F0), halfBlackRed = new Color(
 					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9),
@@ -107,6 +107,12 @@ public class PiecePane extends JPanel implements MouseListener {
 				frame.controllable = false;
 				frame.infoWindow.undoButton.setEnabled(false);
 				frame.board.add(frame, c, yours, enemys, pieces);
+				if (frame.network)
+					try {
+						frame.remote.move(c);
+					} catch (Exception e1) {
+						//TODO
+					}
 			}
 		}
 	}

@@ -3,27 +3,30 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import com.jgoodies.forms.layout.*;
 import com.jgoodies.forms.factories.FormFactory;
 
+import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+
 import ai.AI;
+import rmi.*;
 
 @SuppressWarnings("serial")
 public class ModeFrame extends JFrame {
 	public ModeFrame(final Main frame) throws Exception {
 		super("模式选择");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(320, 220);
-		setMinimumSize(new Dimension(320, 220));
+		setSize(360, 220);
+		setMinimumSize(new Dimension(360, 220));
 		setLocationRelativeTo(null);
 
 		final String[][] aiList = Configure.readAI();
 		final String[] mapList = Configure.readMapList();
 
-		((JComponent) getContentPane()).setBorder(BorderFactory
-				.createEmptyBorder(0, 10, 10, 10));
-
 		final JPanel mapPane = new JPanel();
+		mapPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
 		getContentPane().add(mapPane, BorderLayout.CENTER);
 		mapPane.setLayout(new BorderLayout(0, 0));
 
@@ -54,31 +57,22 @@ public class ModeFrame extends JFrame {
 		frame.board = new Chessboard(mapList[0]);
 		mapPane.add(frame.boardPane(), BorderLayout.CENTER);
 
-		JPanel panel = new JPanel();
-		panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
-		getContentPane().add(panel, BorderLayout.WEST);
-		panel.setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec
-				.decode("144px"), }, new RowSpec[] {
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		getContentPane().add(tabbedPane, BorderLayout.WEST);
+
+		JPanel loaclPane = new JPanel();
+		loaclPane.setOpaque(false);
+		tabbedPane.addTab("本地", null, loaclPane, null);
+
+		loaclPane.setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec
+				.decode("180px"), }, new RowSpec[] {
 				FormFactory.DEFAULT_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
-				RowSpec.decode("bottom:default:grow"), }));
-
-		JPanel networkPane = new JPanel();
-		panel.add(networkPane, "1, 1, left, top");
-
-		JRadioButton localButton = new JRadioButton("本地");
-		networkPane.add(localButton);
-		localButton.setSelected(true);
-
-		JRadioButton networkButton = new JRadioButton("局域网");
-		networkPane.add(networkButton);
-
-		ButtonGroup networkGroup = new ButtonGroup();
-		networkGroup.add(localButton);
-		networkGroup.add(networkButton);
+				FormFactory.DEFAULT_ROWSPEC,
+				RowSpec.decode("bottom:default:grow") }));
 
 		JPanel blackPane = new JPanel();
-		panel.add(blackPane, "1, 2");
+		blackPane.setOpaque(false);
+		loaclPane.add(blackPane, "1, 1");
 		blackPane.setLayout(new BorderLayout(0, 0));
 
 		JLabel blackLabel = new JLabel("黑方：");
@@ -89,7 +83,8 @@ public class ModeFrame extends JFrame {
 		blackPane.add(blackBox);
 
 		JPanel whitePane = new JPanel();
-		panel.add(whitePane, "1, 3");
+		whitePane.setOpaque(false);
+		loaclPane.add(whitePane, "1, 2");
 		whitePane.setLayout(new BorderLayout(0, 0));
 
 		JLabel whiteLabel = new JLabel("白方：");
@@ -101,8 +96,7 @@ public class ModeFrame extends JFrame {
 
 		final JCheckBox evaluateBox = new JCheckBox("AI评估模式");
 		evaluateBox.setEnabled(false);
-		panel.add(evaluateBox, "1, 4, fill, top");
-
+		loaclPane.add(evaluateBox, "1, 3");
 		class evaluateListener implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -119,7 +113,33 @@ public class ModeFrame extends JFrame {
 
 		JButton startButton = new JButton("开始");
 		getRootPane().setDefaultButton(startButton);
-		panel.add(startButton, "1, 5");
+		loaclPane.add(startButton, "1, 4");
+
+		JPanel networkPane = new JPanel();
+		networkPane.setOpaque(false);
+		tabbedPane.addTab("局域网", null, networkPane, null);
+		networkPane.setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec
+				.decode("180px"), }, new RowSpec[] {
+				FormFactory.DEFAULT_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+				RowSpec.decode("bottom:default:grow"), }));
+
+		JButton hostButton = new JButton("作为主机");
+		networkPane.add(hostButton, "1, 3");
+
+		JPanel addressPane = new JPanel();
+		addressPane.setOpaque(false);
+		networkPane.add(addressPane, "1, 1");
+		addressPane.setLayout(new BorderLayout(0, 0));
+
+		JLabel addressLabel = new JLabel("地址：");
+		addressPane.add(addressLabel, BorderLayout.WEST);
+
+		final JTextField addressField = new JTextField();
+		addressLabel.setLabelFor(addressField);
+		addressPane.add(addressField);
+
+		JButton connectButton = new JButton("连接");
+		networkPane.add(connectButton, "1, 2, right, top");
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -138,12 +158,46 @@ public class ModeFrame extends JFrame {
 								.newInstance();
 					ModeFrame.this.dispose();
 					frame.evaluate = evaluateBox.isSelected();
-					frame.start(mapList[mapBox.getSelectedIndex()]);
+					frame.start();
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "致命错误", "运行时错误",
 							JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
 					System.exit(-1);
+				}
+			}
+		});
+
+		hostButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					LocateRegistry.createRegistry(1099);
+					Interface server = new Server();
+					server.setMain(frame);
+					Naming.rebind("reversi", server);
+					frame.networkHost = true;
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "创建服务器错误", "局域网模式错误",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		connectButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					LocateRegistry.createRegistry(1099);
+					Interface server = new Server();
+					Naming.rebind("reversi", server);
+					Interface call = (Interface) Naming.lookup("//"
+							+ addressField.getText() + "/reversi");
+					call.connect(false, server);
+					frame.networkHost = false;
+					frame.remote = call;
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(null, "连接服务器错误", "局域网模式错误",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
