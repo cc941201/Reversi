@@ -66,10 +66,11 @@ public class InfoWindow extends JFrame {
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
 			frame.infoWindow.dispose();
 			frame.dispose();
-			new Main();
+			new ResetThread(frame).start();
+			// TODO
 		}
 	}
 
@@ -81,7 +82,7 @@ public class InfoWindow extends JFrame {
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
 			frame.infoWindow.undoButton.setEnabled(false);
 			frame.history.undo(frame);
 		}

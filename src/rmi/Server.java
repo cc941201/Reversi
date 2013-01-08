@@ -9,6 +9,7 @@ import ui.*;
 @SuppressWarnings("serial")
 public class Server extends UnicastRemoteObject implements Interface {
 	private Main frame;
+	private String map;
 
 	public Server() throws Exception {
 	}
@@ -31,10 +32,9 @@ public class Server extends UnicastRemoteObject implements Interface {
 			enemys = frame.board.black;
 		}
 		Coordinate[] pieces = Determine.judge(c, yours, enemys);
-		if (pieces.length != 0) {
-			frame.controllable = true;
+		if (pieces.length != 0)
 			frame.board.add(frame, c, yours, enemys, pieces);
-		} else
+		else
 			throw (new Exception());
 	}
 
@@ -51,7 +51,9 @@ public class Server extends UnicastRemoteObject implements Interface {
 	}
 
 	@Override
-	public void connect(boolean black, Interface remote) throws Exception {
+	public void connect(boolean black, Interface remote, String map)
+			throws Exception {
+		frame.waitingWindow.dispose();
 		if (frame.networkHost) {
 			String[] options = { "黑方", "白方" };
 			if (JOptionPane.showOptionDialog(null, "请选择", "局域网对战",
@@ -59,9 +61,11 @@ public class Server extends UnicastRemoteObject implements Interface {
 					null, options, options[0]) == 0)
 				frame.networkBlack = true;
 			frame.remote = remote;
-			remote.connect(!frame.networkBlack, null);
-		} else
+			remote.connect(!frame.networkBlack, null, this.map);
+		} else {
 			frame.networkBlack = black;
+			frame.board = new Chessboard(map);
+		}
 		frame.network = true;
 		if (frame.networkBlack)
 			frame.controllable = true;
@@ -69,7 +73,22 @@ public class Server extends UnicastRemoteObject implements Interface {
 	}
 
 	@Override
-	public void setMain(Main frame) {
+	public void set(Main frame, String map) {
 		this.frame = frame;
+		this.map = map;
+	}
+
+	@Override
+	public void close() throws Exception {
+		JOptionPane.showMessageDialog(frame, "对方退出", "游戏停止",
+				JOptionPane.INFORMATION_MESSAGE);
+		frame.infoWindow.dispose();
+		frame.dispose();
+		new ResetThread(frame).start();
+	}
+
+	@Override
+	public void restart() throws Exception {
+		// TODO
 	}
 }

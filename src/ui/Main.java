@@ -1,8 +1,10 @@
 package ui;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import com.jgoodies.forms.layout.*;
+import java.rmi.registry.Registry;
 
 import rmi.Interface;
 
@@ -14,7 +16,9 @@ public class Main extends JFrame {
 	public InfoWindow infoWindow;
 	public EvaluateWindow evaluateWindow;
 	public Invoker invoke = new Invoker();
-	public Interface remote;
+	public WaitingWindow waitingWindow;
+	public Interface local, remote;
+	public Registry hostRegistry, clientRegistry;
 	public boolean controllable = false, finished = false, evaluate = false,
 			showBoard = true, evaluating = true, network = false,
 			networkBlack = false, networkHost;
@@ -23,11 +27,31 @@ public class Main extends JFrame {
 
 	public Main() {
 		super("黑白棋");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				Main.this.infoWindow.dispose();
+				if (Main.this.evaluate) {
+					Main.this.evaluateWindow.dispose();
+					Main.this.evaluating = false;
+				}
+				if (Main.this.network)
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								Main.this.remote.close();
+							} catch (Exception e1) {
+							}
+						}
+					}).start();
+				new ResetThread(Main.this).start();
+			}
+		});
 		setBounds(100, 100, 500, 500);
 		setMinimumSize(new Dimension(500, 500));
 
-		// Choose manual or AI
+		// Choose mode
 		try {
 			new ModeFrame(this);
 		} catch (Exception e) {
@@ -71,8 +95,11 @@ public class Main extends JFrame {
 		if (evaluate) {
 			evaluateWindow = new EvaluateWindow(this);
 			evaluateWindow.updateLabel(this);
-			initialBoard = board.clone();
 		}
+
+		// Backup chessboard
+		if (evaluate || network)
+			initialBoard = board.clone();
 
 		// Invoke
 		if (!network)

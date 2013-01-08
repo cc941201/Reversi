@@ -169,12 +169,17 @@ public class ModeFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Registry registry = LocateRegistry.createRegistry(1099);
-					Interface server = new Server();
-					server.setMain(frame);
-					registry.rebind("reversihost", server);
+					if (frame.hostRegistry == null)
+						frame.hostRegistry = LocateRegistry
+								.createRegistry(1099);
+					else
+						frame.hostRegistry.unbind("reversi");
+					frame.local = new Server();
+					frame.local.set(frame, mapList[mapBox.getSelectedIndex()]);
+					frame.hostRegistry.rebind("reversi", frame.local);
 					frame.networkHost = true;
 					ModeFrame.this.dispose();
+					frame.waitingWindow = new WaitingWindow(frame, true);
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "创建服务器错误", "局域网模式错误",
 							JOptionPane.ERROR_MESSAGE);
@@ -186,16 +191,31 @@ public class ModeFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Registry registry = LocateRegistry.createRegistry(1100);
-					Interface server = new Server();
-					server.setMain(frame);
-					registry.rebind("reversiclient", server);
-					Interface call = (Interface) Naming.lookup("//"
-							+ addressField.getText() + ":1099/reversihost");
-					call.connect(false, server);
+					if (frame.clientRegistry == null)
+						frame.clientRegistry = LocateRegistry
+								.createRegistry(1100);
+					else
+						frame.clientRegistry.unbind("reversi");
+					frame.local = new Server();
+					frame.local.set(frame, null);
+					frame.clientRegistry.rebind("reversi", frame.local);
+					final Interface call = (Interface) Naming.lookup("//"
+							+ addressField.getText() + "/reversi");
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								call.connect(false, frame.local, null);
+							} catch (Exception e) {
+								JOptionPane.showMessageDialog(null, "连接服务器错误",
+										"局域网模式错误", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}).start();
 					frame.networkHost = false;
 					frame.remote = call;
 					ModeFrame.this.dispose();
+					frame.waitingWindow = new WaitingWindow(frame, false);
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "连接服务器错误", "局域网模式错误",
 							JOptionPane.ERROR_MESSAGE);

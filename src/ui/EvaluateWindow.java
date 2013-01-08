@@ -20,7 +20,7 @@ public class EvaluateWindow extends JFrame {
 				frame.infoWindow.dispose();
 				frame.dispose();
 				frame.evaluating = false;
-				new Main();
+				new ResetThread(frame).start();
 			}
 		});
 

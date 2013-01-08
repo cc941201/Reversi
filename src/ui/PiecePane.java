@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.event.*;
 
 import ai.Determine;
@@ -111,7 +112,15 @@ public class PiecePane extends JPanel implements MouseListener {
 					try {
 						frame.remote.move(c);
 					} catch (Exception e1) {
-						// TODO
+						try {
+							frame.remote.close();
+						} catch (Exception e2) {
+						}
+						JOptionPane.showMessageDialog(frame, "连接中断", "局域网模式错误",
+								JOptionPane.ERROR_MESSAGE);
+						frame.infoWindow.dispose();
+						frame.dispose();
+						new ResetThread(frame).start();
 					}
 			}
 		}

@@ -43,9 +43,12 @@ public class MoveTimer extends TimerTask {
 					frame.winner = 1;
 				if (frame.board.blackNum < frame.board.whiteNum)
 					frame.winner = -1;
-				if (frame.invoke.blackIsHuman || frame.invoke.whiteIsHuman)
+				if (!frame.network
+						&& (frame.invoke.blackIsHuman || frame.invoke.whiteIsHuman))
 					frame.infoWindow.undoButton.setEnabled(true);
 			}
+			if (frame.network && (frame.networkBlack == frame.board.turn))
+				frame.controllable = true;
 			frame.infoWindow.updateLabel(frame);
 			if (!frame.finished && !frame.network)
 				frame.invoke.invoke(frame);
