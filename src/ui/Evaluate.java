@@ -47,12 +47,12 @@ public class Evaluate extends JFrame {
 			}
 		});
 
-		JButton pauseButton = new JButton("暂停");
+		final JToggleButton pauseButton = new JToggleButton("暂停");
 		panel.add(pauseButton);
 		pauseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.evaluating = !frame.evaluating;
+				frame.evaluating = !pauseButton.isSelected();
 				if (frame.evaluating)
 					new EvaluateThread(frame).start();
 			}
