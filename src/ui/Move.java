@@ -22,7 +22,7 @@ public class Move {
 				frame.repaint();
 			}
 			if (frame.evaluating)
-				new EvaluateThread(frame).start();
+				new RestartThread(frame).start();
 		}
 		if (!frame.finished)
 			frame.invoke.invoke(frame);

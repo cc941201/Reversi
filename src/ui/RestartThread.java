@@ -1,9 +1,9 @@
 package ui;
 
-public class EvaluateThread extends Thread {
+public class RestartThread extends Thread {
 	private Main frame;
 
-	public EvaluateThread(Main frame) {
+	public RestartThread(Main frame) {
 		this.frame = frame;
 	}
 
