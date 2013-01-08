@@ -55,7 +55,7 @@ public class EvaluateWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				frame.evaluating = !pauseButton.isSelected();
 				if (frame.evaluating)
-					new RestartThread(frame).start();
+					new RestartThread(frame, false).start();
 			}
 		});
 

@@ -67,7 +67,7 @@ public class InfoWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new RestartThread(frame).start();
+			new RestartThread(frame, true).start();
 		}
 	}
 

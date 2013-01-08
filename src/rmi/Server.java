@@ -95,6 +95,6 @@ public class Server extends UnicastRemoteObject implements Interface {
 
 	@Override
 	public void restart() throws Exception {
-		// TODO
+		new RestartThread(frame, false).start();
 	}
 }
