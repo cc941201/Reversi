@@ -5,11 +5,11 @@ import javax.swing.*;
 import java.awt.event.*;
 
 @SuppressWarnings("serial")
-public class Info extends JFrame {
+public class InfoWindow extends JFrame {
 	private JLabel label = new JLabel();
 	public JButton undoButton;
 
-	public Info(Main frame) {
+	public InfoWindow(Main frame) {
 		super("状态");
 		setBounds(600, 100, 200, 180);
 		setResizable(false);

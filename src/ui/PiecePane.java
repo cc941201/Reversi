@@ -7,7 +7,7 @@ import java.awt.event.*;
 import ai.Determine;
 
 @SuppressWarnings("serial")
-public class Piece extends JPanel implements MouseListener {
+public class PiecePane extends JPanel implements MouseListener {
 	private Coordinate c;
 	private Main frame;
 	private boolean focus = false, turn = false;
@@ -16,7 +16,7 @@ public class Piece extends JPanel implements MouseListener {
 					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9),
 			blue = new Color(0x4B89D0), red = new Color(0xFF6666);
 
-	public Piece(Main frame, Coordinate c) {
+	public PiecePane(Main frame, Coordinate c) {
 		this.c = c;
 		this.frame = frame;
 		addMouseListener(this);

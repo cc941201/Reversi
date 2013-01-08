@@ -9,8 +9,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import ai.AI;
 
 @SuppressWarnings("serial")
-public class Mode extends JFrame {
-	public Mode(final Main frame) throws Exception {
+public class ModeFrame extends JFrame {
+	public ModeFrame(final Main frame) throws Exception {
 		super("模式选择");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(320, 220);
@@ -136,7 +136,7 @@ public class Mode extends JFrame {
 						frame.invoke.whitePlayer = (AI) Class.forName(
 								"ai." + aiList[1][whiteBox.getSelectedIndex()])
 								.newInstance();
-					Mode.this.dispose();
+					ModeFrame.this.dispose();
 					frame.evaluate = evaluateBox.isSelected();
 					frame.start(mapList[mapBox.getSelectedIndex()]);
 				} catch (Exception e1) {

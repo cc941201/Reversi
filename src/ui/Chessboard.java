@@ -24,7 +24,7 @@ public class Chessboard {
 		else
 			whiteNum++;
 		if (frame.evaluate)
-			Move.move(frame, yours, enemys, pieces);
+			MoveEvaluation.move(frame, yours, enemys, pieces);
 		else {
 			frame.history.add(frame);
 			Coordinate temp = last;

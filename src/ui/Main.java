@@ -7,11 +7,11 @@ import com.jgoodies.forms.layout.*;
 
 @SuppressWarnings("serial")
 public class Main extends JFrame {
-	public Piece[][] panel = new Piece[8][8];
+	public PiecePane[][] panel = new PiecePane[8][8];
 	public Chessboard board, initialBoard;
 	public History history = new History();
-	public Info infoWindow;
-	public Evaluate evaluateWindow;
+	public InfoWindow infoWindow;
+	public EvaluateWindow evaluateWindow;
 	public Invoker invoke = new Invoker();
 	public boolean controllable = false, finished = false, evaluate,
 			showBoard = true, evaluating = true;
@@ -26,7 +26,7 @@ public class Main extends JFrame {
 
 		// Choose manual or AI
 		try {
-			new Mode(this);
+			new ModeFrame(this);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "配置文件错误", "错误",
 					JOptionPane.ERROR_MESSAGE);
@@ -50,7 +50,7 @@ public class Main extends JFrame {
 		// Add pieces
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++) {
-				panel[i][j] = new Piece(this, new Coordinate(i, j));
+				panel[i][j] = new PiecePane(this, new Coordinate(i, j));
 				boardPane.add(panel[i][j], (i + 1) + ", " + (j + 1)
 						+ ", fill, fill");
 			}
@@ -60,13 +60,13 @@ public class Main extends JFrame {
 
 	public void start(String map) {
 		// Add info frame
-		infoWindow = new Info(this);
+		infoWindow = new InfoWindow(this);
 		if (!evaluate)
 			infoWindow.updateLabel(this);
 
 		// Add evaluate frame, and backup chessboard
 		if (evaluate) {
-			evaluateWindow = new Evaluate(this);
+			evaluateWindow = new EvaluateWindow(this);
 			evaluateWindow.updateLabel(this);
 			initialBoard = board.clone();
 		}

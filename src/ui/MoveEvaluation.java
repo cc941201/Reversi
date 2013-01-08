@@ -2,7 +2,7 @@ package ui;
 
 import ai.Determine;
 
-public class Move {
+public class MoveEvaluation {
 	private static Main frame;
 	private static boolean[][] yours, enemys;
 
@@ -30,9 +30,9 @@ public class Move {
 
 	public static void move(Main frame, boolean[][] yours, boolean[][] enemys,
 			Coordinate[] pieces) {
-		Move.frame = frame;
-		Move.yours = yours;
-		Move.enemys = enemys;
+		MoveEvaluation.frame = frame;
+		MoveEvaluation.yours = yours;
+		MoveEvaluation.enemys = enemys;
 		for (int i = 0; i < pieces.length; i++)
 			if (pieces[i] != null) {
 				yours[pieces[i].x][pieces[i].y] = true;

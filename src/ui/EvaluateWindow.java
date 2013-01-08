@@ -5,11 +5,11 @@ import java.awt.BorderLayout;
 import java.awt.event.*;
 
 @SuppressWarnings("serial")
-public class Evaluate extends JFrame {
+public class EvaluateWindow extends JFrame {
 	private JLabel label = new JLabel();
 	private int blackWin = 0, whiteWin = 0, draw = 0;
 
-	public Evaluate(final Main frame) {
+	public EvaluateWindow(final Main frame) {
 		super("统计");
 		setBounds(600, 280, 200, 180);
 		setResizable(false);
