@@ -11,7 +11,7 @@ public class Info extends JFrame {
 
 	public Info(Main frame) {
 		super("状态");
-		setBounds(600, 100, 200, 200);
+		setBounds(600, 100, 200, 180);
 		setResizable(false);
 
 		label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -55,7 +55,7 @@ public class Info extends JFrame {
 				+ frame.board.blackNum + "个<br><b>白方：</b>"
 				+ frame.board.whiteNum + "个<br><br><b>空余：</b>"
 				+ (64 - frame.board.blackNum - frame.board.whiteNum)
-				+ "个<br><br></html>");
+				+ "个</html>");
 	}
 
 	private class Restart implements ActionListener {

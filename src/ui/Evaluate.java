@@ -11,7 +11,7 @@ public class Evaluate extends JFrame {
 
 	public Evaluate(final Main frame) {
 		super("统计");
-		setBounds(600, 300, 200, 150);
+		setBounds(600, 280, 200, 180);
 		setResizable(false);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -27,9 +27,12 @@ public class Evaluate extends JFrame {
 		label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		getContentPane().add(label, BorderLayout.CENTER);
 
+		JPanel panel = new JPanel();
+		getContentPane().add(panel, BorderLayout.SOUTH);
+
 		final JCheckBox checkBox = new JCheckBox("显示棋盘");
 		checkBox.setSelected(true);
-		getContentPane().add(checkBox, BorderLayout.SOUTH);
+		panel.add(checkBox);
 		checkBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -41,6 +44,24 @@ public class Evaluate extends JFrame {
 					frame.setVisible(false);
 					frame.infoWindow.setVisible(false);
 				}
+			}
+		});
+
+		JButton pauseButton = new JButton("暂停");
+		panel.add(pauseButton);
+		pauseButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.evaluating = !frame.evaluating;
+				if (frame.evaluating)
+					new Thread() {
+						@Override
+						public void run() {
+							frame.finished = false;
+							frame.board = frame.initialBoard.clone();
+							frame.invoke.invoke(frame);
+						}
+					}.start();
 			}
 		});
 
