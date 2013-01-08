@@ -7,7 +7,7 @@ import java.awt.event.*;
 @SuppressWarnings("serial")
 public class InfoWindow extends JFrame {
 	private JLabel label = new JLabel();
-	public JButton undoButton;
+	public JButton undoButton, restartButton;
 
 	public InfoWindow(Main frame) {
 		super("状态");
@@ -25,9 +25,9 @@ public class InfoWindow extends JFrame {
 		undoButton.setEnabled(false);
 		panel.add(undoButton);
 
-		JButton restartButton = new JButton("重新开始");
+		restartButton = new JButton("重新开始");
 		restartButton.addActionListener(new Restart(frame));
-		if (frame.evaluate)
+		if (frame.evaluate || frame.network)
 			restartButton.setEnabled(false);
 		panel.add(restartButton);
 
@@ -67,10 +67,7 @@ public class InfoWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			frame.infoWindow.dispose();
-			frame.dispose();
-			new ResetThread(frame).start();
-			// TODO
+			new RestartThread(frame).start();
 		}
 	}
 

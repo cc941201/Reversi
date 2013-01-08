@@ -18,6 +18,8 @@ public class Chessboard {
 
 	public void add(Main frame, Coordinate c, boolean[][] yours,
 			boolean[][] enemys, Coordinate[] pieces) {
+		if (!frame.evaluate && !frame.network)
+			frame.history.add(frame);
 		yours[c.x][c.y] = true;
 		if (turn)
 			blackNum++;
@@ -26,14 +28,14 @@ public class Chessboard {
 		if (frame.evaluate)
 			MoveEvaluation.move(frame, yours, enemys, pieces);
 		else {
-			frame.history.add(frame);
 			Coordinate temp = last;
 			last = c;
 			frame.panel[c.x][c.y].repaint();
 			if (temp != null)
 				frame.panel[temp.x][temp.y].repaint();
-			new Timer().schedule(new MoveTimer(frame, yours, enemys, pieces),
-					200);
+			frame.startTimer = new Timer();
+			frame.startTimer.schedule(new MoveTimer(frame, yours, enemys,
+					pieces), 200);
 			frame.infoWindow.updateLabel(frame);
 		}
 	}

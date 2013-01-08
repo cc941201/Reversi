@@ -46,6 +46,8 @@ public class MoveTimer extends TimerTask {
 				if (!frame.network
 						&& (frame.invoke.blackIsHuman || frame.invoke.whiteIsHuman))
 					frame.infoWindow.undoButton.setEnabled(true);
+				if (frame.network)
+					frame.infoWindow.restartButton.setEnabled(true);
 			}
 			if (frame.network && (frame.networkBlack == frame.board.turn))
 				frame.controllable = true;
@@ -66,20 +68,20 @@ public class MoveTimer extends TimerTask {
 	@Override
 	public void run() {
 		int time = 0;
-		Timer timer = new Timer();
+		frame.moveTimer = new Timer();
 		for (int i = 0; i < pieces.length; i++)
 			if (pieces[i] == null)
 				time += 200;
 			else {
 				yours[pieces[i].x][pieces[i].y] = true;
 				enemys[pieces[i].x][pieces[i].y] = false;
-				timer.schedule(new Repaint(
+				frame.moveTimer.schedule(new Repaint(
 						frame.panel[pieces[i].x][pieces[i].y]), time);
 			}
 		if (frame.invoke.blackIsHuman || frame.invoke.whiteIsHuman)
 			time += 100;
 		else
 			time += 500;
-		timer.schedule(new Finish(), time);
+		frame.moveTimer.schedule(new Finish(), time);
 	}
 }

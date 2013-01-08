@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import com.jgoodies.forms.layout.*;
+import java.util.Timer;
 import java.rmi.registry.Registry;
 
 import rmi.Interface;
@@ -19,6 +20,7 @@ public class Main extends JFrame {
 	public WaitingWindow waitingWindow;
 	public Interface local, remote;
 	public Registry hostRegistry, clientRegistry;
+	public Timer startTimer, moveTimer;
 	public boolean controllable = false, finished = false, evaluate = false,
 			showBoard = true, evaluating = true, network = false,
 			networkBlack = false, networkHost;
@@ -98,8 +100,7 @@ public class Main extends JFrame {
 		}
 
 		// Backup chessboard
-		if (evaluate || network)
-			initialBoard = board.clone();
+		initialBoard = board.clone();
 
 		// Invoke
 		if (!network)

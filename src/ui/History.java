@@ -1,7 +1,7 @@
 package ui;
 
 public class History {
-	public Chessboard[] board = new Chessboard[60];
+	public Chessboard[] board = new Chessboard[62];
 	public int move = 0;
 
 	public void add(Main frame) {
