@@ -4,18 +4,13 @@ import ui.Coordinate;
 
 public class EvaluationMain implements AI {
 
-	@Override
-	public Coordinate move(boolean[][] yours, boolean[][] enemys) {
-		if(Determine.judge(new Coordinate(0, 0),yours, enemys).length>0)
-			return new Coordinate(0, 0);
-		if(Determine.judge(new Coordinate(0, 7),yours, enemys).length>0)
-			return new Coordinate(0, 7);
-		if(Determine.judge(new Coordinate(7, 0),yours, enemys).length>0)
-			return new Coordinate(7, 0);
-		if(Determine.judge(new Coordinate(7, 7),yours, enemys).length>0)
-			return new Coordinate(7, 7);
+	static int border = 5;
+	static int ansX = 0, ansY = 0;
+	public double search(boolean[][] yours, boolean[][] enemys, int times){
+		if (times == 0)
+			return 0;
 		int current = EvaluationSituation.Score(yours,enemys);
-		int x,y,ansX = 0,ansY = 0;
+		int x,y;
 		double max=-9999.99;
 		int deltaMobility[][] = new int[8][8];
 		int deltaStableDiscs[][] = new int[8][8];
@@ -49,16 +44,69 @@ public class EvaluationMain implements AI {
 				int yourGainATempo = EvaluationGainATempo.pass(yours, enemys);
 				int enemysGainATempo = EvaluationGainATempo.pass(enemys, yours);
 				gainATempo[x][y]=yourGainATempo - enemysGainATempo*3;
-				yours[x][y]=false;
 				value[x][y]=(double)deltaMobility[x][y]*(64-(double)current)/5
-						+(double)(deltaStableDiscs[x][y]*current*current)/5
+						+(double)(deltaStableDiscs[x][y]*current*current)/4
 						+(double)deltaPotentialMobility[x][y]*(double)(64-current)/12
-						+(double)gainATempo[x][y]*250+(double)gainNum/2
+						+(double)gainATempo[x][y]*750+(double)gainNum/2
 						+(double)EvaluationScore.Score(yours)-2.5*(double)EvaluationScore.Score(enemysCanMove);
-				if(value[x][y]>max){
-					max=value[x][y];
-					ansX=x;
-					ansY=y;
+				if(times%2 == 1){
+					value[x][y] += search(enemys,yours,times-1);
+				}
+				yours[x][y]=false;
+			}
+		}
+		max = -9999999;
+		int tmpX = 0,tmpY = 0;
+		for(x=0;x<8;x++){
+			for(y=0;y<8;y++){
+				if (Determine.judge(new Coordinate(x, y), yours, enemys).length == 0)
+					continue;
+				if (max < value[x][y]){
+					max = value[x][y];
+					tmpX = x;
+					tmpY = y;
+				}
+			}
+		}
+		if (times == border){
+			ansX = tmpX;
+			ansY = tmpY;
+			return 0;
+		}
+		else {
+			if(times%2 == 1)
+				return(max);
+			else{
+				yours[tmpX][tmpY]=true;
+				max += search(enemys,yours,times-1);
+				yours[tmpX][tmpY]=false;
+				return max;
+			}
+		}
+	}
+	@Override
+	public Coordinate move(boolean[][] yours, boolean[][] enemys) {
+		boolean restoreYours[][] = new boolean[8][8];
+		boolean restoreEnemys[][] = new boolean[8][8];
+		int li,lj;
+		for(li=0;li<8;li++){
+			for(lj=0;lj<8;lj++){
+				restoreYours[li][lj]=yours[li][lj];
+				restoreEnemys[li][lj]=enemys[li][lj];
+			}
+		}
+		search(yours,enemys,border);
+		int tmX = ansX;
+		int tmY = ansY;
+		if (Determine.judge(new Coordinate(tmX, tmY), yours, enemys).length == 0){
+			for(li=0;li<8;li++){
+				for(lj=0;lj<8;lj++){
+					if (Determine.judge(new Coordinate(li, lj), yours, enemys).length > 0){
+						ansX = li;
+						ansY = lj;
+					}
+					if((restoreYours[li][lj]!=yours[li][lj])||(restoreEnemys[li][lj]!=enemys[li][lj]))
+						System.out.println("Error");
 				}
 			}
 		}
