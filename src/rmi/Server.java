@@ -33,7 +33,6 @@ public class Server extends UnicastRemoteObject implements Interface {
 		Coordinate[] pieces = Determine.judge(c, yours, enemys);
 		if (pieces.length != 0) {
 			frame.controllable = true;
-			frame.infoWindow.undoButton.setEnabled(false);
 			frame.board.add(frame, c, yours, enemys, pieces);
 		} else
 			throw (new Exception());
@@ -60,6 +59,7 @@ public class Server extends UnicastRemoteObject implements Interface {
 					null, options, options[0]) == 0)
 				frame.networkBlack = true;
 			frame.remote = remote;
+			remote.connect(!frame.networkBlack, null);
 		} else
 			frame.networkBlack = black;
 		frame.network = true;

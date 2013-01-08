@@ -172,8 +172,9 @@ public class ModeFrame extends JFrame {
 					Registry registry = LocateRegistry.createRegistry(1099);
 					Interface server = new Server();
 					server.setMain(frame);
-					registry.rebind("reversi", server);
+					registry.rebind("reversihost", server);
 					frame.networkHost = true;
+					ModeFrame.this.dispose();
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "创建服务器错误", "局域网模式错误",
 							JOptionPane.ERROR_MESSAGE);
@@ -185,15 +186,16 @@ public class ModeFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Registry registry = LocateRegistry.createRegistry(1099);
+					Registry registry = LocateRegistry.createRegistry(1100);
 					Interface server = new Server();
 					server.setMain(frame);
-					registry.rebind("reversi", server);
+					registry.rebind("reversiclient", server);
 					Interface call = (Interface) Naming.lookup("//"
-							+ addressField.getText() + "/reversi");
+							+ addressField.getText() + ":1099/reversihost");
 					call.connect(false, server);
 					frame.networkHost = false;
 					frame.remote = call;
+					ModeFrame.this.dispose();
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "连接服务器错误", "局域网模式错误",
 							JOptionPane.ERROR_MESSAGE);

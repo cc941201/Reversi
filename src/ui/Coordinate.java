@@ -1,6 +1,9 @@
 package ui;
 
-public class Coordinate {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Coordinate implements Serializable {
 	public int x;
 	public int y;
 

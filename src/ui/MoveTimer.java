@@ -35,7 +35,6 @@ public class MoveTimer extends TimerTask {
 	private class Finish extends TimerTask {
 		@Override
 		public void run() {
-			frame.controllable = false;
 			if (Determine.canMoveNum(enemys, yours) != 0)
 				frame.board.turn = !frame.board.turn;
 			else if (Determine.canMoveNum(yours, enemys) == 0) {
