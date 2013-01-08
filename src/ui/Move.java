@@ -22,14 +22,7 @@ public class Move {
 				frame.repaint();
 			}
 			if (frame.evaluating)
-				new Thread() {
-					@Override
-					public void run() {
-						frame.finished = false;
-						frame.board = frame.initialBoard.clone();
-						frame.invoke.invoke(frame);
-					}
-				}.start();
+				new EvaluateThread(frame).start();
 		}
 		if (!frame.finished)
 			frame.invoke.invoke(frame);

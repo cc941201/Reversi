@@ -54,14 +54,7 @@ public class Evaluate extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				frame.evaluating = !frame.evaluating;
 				if (frame.evaluating)
-					new Thread() {
-						@Override
-						public void run() {
-							frame.finished = false;
-							frame.board = frame.initialBoard.clone();
-							frame.invoke.invoke(frame);
-						}
-					}.start();
+					new EvaluateThread(frame).start();
 			}
 		});
 
