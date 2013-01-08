@@ -9,7 +9,7 @@ public interface Interface extends Remote {
 
 	public void mouseEntered(Coordinate c) throws Exception;
 
-	public void mouseExited(Coordinate c) throws Exception;
+	public void mouseExited() throws Exception;
 
 	public void connect(boolean black, Interface remote, String map)
 			throws Exception;

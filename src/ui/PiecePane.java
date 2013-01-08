@@ -2,7 +2,6 @@ package ui;
 
 import java.awt.*;
 import javax.swing.*;
-
 import java.awt.event.*;
 
 import ai.Determine;
@@ -141,18 +140,22 @@ public class PiecePane extends JPanel implements MouseListener {
 				enemys = frame.board.black;
 			}
 			Coordinate[] pieces = Determine.judge(c, yours, enemys);
-			if (pieces.length != 0)
-				for (int i = 0; i < pieces.length; i++)
-					if (pieces[i] != null) {
-						frame.panel[pieces[i].x][pieces[i].y].turn = true;
-						frame.panel[pieces[i].x][pieces[i].y].repaint();
-					}
+			for (int i = 0; i < pieces.length; i++)
+				if (pieces[i] != null) {
+					frame.panel[pieces[i].x][pieces[i].y].turn = true;
+					frame.panel[pieces[i].x][pieces[i].y].repaint();
+				}
+			if (frame.network)
+				try {
+					frame.remote.mouseEntered(c);
+				} catch (Exception e1) {
+				}
 		}
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if (frame.controllable)
+		if (frame.controllable) {
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
 					if (frame.panel[i][j].turn || frame.panel[i][j].focus) {
@@ -160,6 +163,12 @@ public class PiecePane extends JPanel implements MouseListener {
 						frame.panel[i][j].focus = false;
 						frame.panel[i][j].repaint();
 					}
+			if (frame.network)
+				try {
+					frame.remote.mouseExited();
+				} catch (Exception e1) {
+				}
+		}
 	}
 
 	@Override
