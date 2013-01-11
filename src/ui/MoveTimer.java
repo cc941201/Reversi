@@ -49,7 +49,8 @@ public class MoveTimer extends TimerTask {
 				if (frame.network)
 					frame.infoWindow.restartButton.setEnabled(true);
 			}
-			if (frame.network && (frame.networkBlack == frame.board.turn))
+			if (frame.network && !frame.finished
+					&& (frame.networkHostBlack == frame.board.turn))
 				frame.controllable = true;
 			frame.infoWindow.updateLabel(frame);
 			if (!frame.finished && !frame.network)

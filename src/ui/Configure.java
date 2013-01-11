@@ -78,11 +78,11 @@ public class Configure {
 				for (tmpY = 0; tmpY < 8; tmpY++) {
 					if (tmpSt.charAt(tmpY) == '-') {
 						board.blackNum++;
-						board.black[tmpX][tmpY] = true;
+						board.black[tmpY][tmpX] = true;
 					}
 					if (tmpSt.charAt(tmpY) == '+') {
 						board.whiteNum++;
-						board.white[tmpX][tmpY] = true;
+						board.white[tmpY][tmpX] = true;
 					}
 				}
 			}

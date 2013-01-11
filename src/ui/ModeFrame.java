@@ -208,7 +208,6 @@ public class ModeFrame extends JFrame {
 							}
 						}
 					}).start();
-					frame.networkHost = false;
 					frame.remote = call;
 					ModeFrame.this.dispose();
 					frame.waitingWindow = new WaitingWindow(frame, false);

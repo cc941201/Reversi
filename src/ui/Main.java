@@ -23,7 +23,7 @@ public class Main extends JFrame {
 	public Timer startTimer, moveTimer;
 	public boolean controllable = false, finished = false, evaluate = false,
 			showBoard = true, evaluating = true, network = false,
-			networkBlack = false, networkHost;
+			networkHostBlack = false, networkHost = false;
 	// winner: 1 black, -1 white, 0 tie
 	public int winner = 0;
 
@@ -32,21 +32,6 @@ public class Main extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Main.this.infoWindow.dispose();
-				if (Main.this.evaluate) {
-					Main.this.evaluateWindow.dispose();
-					Main.this.evaluating = false;
-				}
-				if (Main.this.network)
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								Main.this.remote.close();
-							} catch (Exception e1) {
-							}
-						}
-					}).start();
 				new ResetThread(Main.this).start();
 			}
 		});
@@ -90,8 +75,7 @@ public class Main extends JFrame {
 	public void start() {
 		// Add info frame
 		infoWindow = new InfoWindow(this);
-		if (!evaluate)
-			infoWindow.updateLabel(this);
+		infoWindow.updateLabel(this);
 
 		// Add evaluate frame, and backup chessboard
 		if (evaluate) {

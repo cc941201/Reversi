@@ -14,16 +14,6 @@ public class WaitingWindow extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if (!host)
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								frame.remote.close();
-							} catch (Exception e1) {
-							}
-						}
-					}).start();
 				new ResetThread(frame).start();
 			}
 		});

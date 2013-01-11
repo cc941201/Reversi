@@ -90,17 +90,17 @@ public class Server extends UnicastRemoteObject implements Interface {
 			if (JOptionPane.showOptionDialog(null, "请选择", "局域网对战",
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
 					null, options, options[0]) == 0)
-				frame.networkBlack = true;
+				frame.networkHostBlack = true;
 			if (!frame.finished) {
 				frame.remote = remote;
-				remote.connect(!frame.networkBlack, null, this.map);
+				remote.connect(frame.networkHostBlack, null, this.map);
 			}
 		} else {
-			frame.networkBlack = black;
+			frame.networkHostBlack = black;
 			frame.board = new Chessboard(map);
 		}
 		frame.network = true;
-		if (frame.networkBlack)
+		if (frame.networkHost == frame.networkHostBlack)
 			frame.controllable = true;
 		if (!frame.finished)
 			frame.start();
@@ -114,18 +114,21 @@ public class Server extends UnicastRemoteObject implements Interface {
 
 	@Override
 	public void close() throws Exception {
-		frame.finished = true;
-		JOptionPane.getRootFrame().dispose();
-		JOptionPane.showMessageDialog(frame, "对方退出", "游戏停止",
-				JOptionPane.INFORMATION_MESSAGE);
-		if (frame.infoWindow != null)
-			frame.infoWindow.dispose();
-		frame.dispose();
-		new ResetThread(frame).start();
+		if (frame.network) {
+			frame.finished = true;
+			JOptionPane.getRootFrame().dispose();
+			JOptionPane.showMessageDialog(frame, "对方退出", "游戏停止",
+					JOptionPane.INFORMATION_MESSAGE);
+			if (frame.infoWindow != null)
+				frame.infoWindow.dispose();
+			frame.dispose();
+			new ResetThread(frame).start();
+		}
 	}
 
 	@Override
 	public void restart() throws Exception {
-		new RestartThread(frame, false).start();
+		if (frame.network)
+			new RestartThread(frame, false).start();
 	}
 }

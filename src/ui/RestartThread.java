@@ -26,26 +26,21 @@ public class RestartThread extends Thread {
 		if (!frame.network) {
 			frame.history = new History();
 			frame.infoWindow.undoButton.setEnabled(false);
-			if (frame.invoke.blackIsHuman || frame.invoke.whiteIsHuman)
-				frame.controllable = true;
 		}
+		frame.infoWindow.restartButton.setEnabled(false);
 		if (!frame.network)
 			frame.invoke.invoke(frame);
 		else {
 			frame.infoWindow.restartButton.setEnabled(false);
-			if (frame.networkHost == frame.networkBlack)
+			if (frame.networkHost == frame.networkHostBlack)
 				frame.controllable = true;
-			else
-				frame.controllable = false;
+			frame.infoWindow.updateLabel(frame);
 			if (callRemote)
 				try {
 					frame.remote.restart();
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(frame, "连接中断", "局域网模式错误",
 							JOptionPane.ERROR_MESSAGE);
-					if (frame.infoWindow != null)
-						frame.infoWindow.dispose();
-					frame.dispose();
 					new ResetThread(frame).start();
 				}
 		}

@@ -117,9 +117,6 @@ public class PiecePane extends JPanel implements MouseListener {
 						}
 						JOptionPane.showMessageDialog(frame, "连接中断", "局域网模式错误",
 								JOptionPane.ERROR_MESSAGE);
-						if (frame.infoWindow != null)
-							frame.infoWindow.dispose();
-						frame.dispose();
 						new ResetThread(frame).start();
 					}
 			}
