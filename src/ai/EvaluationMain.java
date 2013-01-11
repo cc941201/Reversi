@@ -10,9 +10,12 @@ public class EvaluationMain implements AI {
 	public double search(boolean[][] yours, boolean[][] enemys, int times) {
 		if (times == 0)
 			return 0;
+		if (Determine.canMoveNum(yours,enemys)==0){
+			return -9999999.99-search(enemys, yours, times - 1);
+		}
 		int current = EvaluationSituation.Score(yours, enemys);
 		int x, y;
-		double max = -9999.99;
+		double max = -9999999.99;
 		int deltaMobility[][] = new int[8][8];
 		int deltaStableDiscs[][] = new int[8][8];
 		int deltaPotentialMobility[][] = new int[8][8];
@@ -63,7 +66,7 @@ public class EvaluationMain implements AI {
 				yours[x][y] = false;
 			}
 		}
-		max = -9999999;
+		max = -9999999.99;
 		int tmpX = 0, tmpY = 0;
 		for (x = 0; x < 8; x++) {
 			for (y = 0; y < 8; y++) {
@@ -90,7 +93,7 @@ public class EvaluationMain implements AI {
 					yours[tmpX][tmpY] = false;
 					return max;
 				} else{
-					return search(enemys, yours, times - 1)+9999999;
+					return -search(enemys, yours, times - 1)-9999999.99;
 				}
 			}
 		}
