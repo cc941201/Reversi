@@ -13,13 +13,13 @@ public class EvaluationScore {
 			ans+=750;
 		for(x=2;x<6;x++){
 			if(player[x][0])
-				ans+=18;
+				ans+=20;
 			if(player[x][7])
-				ans+=18;
+				ans+=20;
 			if(player[7][x])
-				ans+=18;
+				ans+=20;
 			if(player[0][x])
-				ans+=18;
+				ans+=20;
 			if(player[x][1])
 				ans+=5;
 			if(player[x][6])
