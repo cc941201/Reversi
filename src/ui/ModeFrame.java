@@ -172,8 +172,6 @@ public class ModeFrame extends JFrame {
 					if (frame.hostRegistry == null)
 						frame.hostRegistry = LocateRegistry
 								.createRegistry(1099);
-					else
-						frame.hostRegistry.unbind("reversi");
 					frame.local = new Server();
 					frame.local.set(frame, mapList[mapBox.getSelectedIndex()]);
 					frame.hostRegistry.rebind("reversi", frame.local);
@@ -194,8 +192,6 @@ public class ModeFrame extends JFrame {
 					if (frame.clientRegistry == null)
 						frame.clientRegistry = LocateRegistry
 								.createRegistry(1100);
-					else
-						frame.clientRegistry.unbind("reversi");
 					frame.local = new Server();
 					frame.local.set(frame, null);
 					frame.clientRegistry.rebind("reversi", frame.local);
