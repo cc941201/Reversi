@@ -10,7 +10,7 @@ public class EvaluationMain implements AI {
 	public double search(boolean[][] yours, boolean[][] enemys, int times) {
 		if (times == 0)
 			return 0;
-		if (Determine.canMoveNum(yours,enemys)==0){
+		if (Determine.canPlace(yours,enemys).length==0){
 			return (-9999999.99-search(enemys, yours, times - 1));
 		}
 		int current = EvaluationSituation.Score(yours, enemys);
