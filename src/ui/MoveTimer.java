@@ -19,7 +19,7 @@ public class MoveTimer extends TimerTask {
 		}
 
 		@Override
-		public void run() {
+		public synchronized void run() {
 			if (frame.board.turn) {
 				frame.board.blackNum++;
 				frame.board.whiteNum--;
