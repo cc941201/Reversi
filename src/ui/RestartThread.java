@@ -16,16 +16,14 @@ public class RestartThread extends Thread {
 		frame.finished = false;
 		frame.winner = 0;
 		frame.board = frame.initialBoard.clone();
-		if (!frame.evaluate) {
-			if (frame.startTimer != null)
-				frame.startTimer.cancel();
-			if (frame.moveTimer != null)
-				frame.moveTimer.cancel();
-			for (int i = 0; i < 8; i++)
-				for (int j = 0; j < 8; j++)
-					frame.panel[i][j].repaint();
-		}
-		if (!frame.evaluate && !frame.network) {
+		if (frame.startTimer != null)
+			frame.startTimer.cancel();
+		if (frame.moveTimer != null)
+			frame.moveTimer.cancel();
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				frame.panel[i][j].repaint();
+		if (!frame.network) {
 			frame.history = new History();
 			frame.infoWindow.undoButton.setEnabled(false);
 			if (frame.invoke.blackIsHuman || frame.invoke.whiteIsHuman)

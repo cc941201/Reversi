@@ -103,7 +103,9 @@ public class Main extends JFrame {
 		initialBoard = board.clone();
 
 		// Invoke
-		if (!network)
+		if (evaluate)
+			new EvaluateThread(this).start();
+		else if (!network)
 			invoke.invoke(this);
 
 		// Show window
