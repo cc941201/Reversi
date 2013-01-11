@@ -72,9 +72,9 @@ class EvaluateThread extends Thread {
 	}
 
 	private void finish(final Main frame, boolean[][] yours, boolean[][] enemys) {
-		if (Determine.canMoveNum(enemys, yours) != 0)
+		if (Determine.canPlace(enemys, yours).length != 0)
 			board.turn = !board.turn;
-		else if (Determine.canMoveNum(yours, enemys) == 0) {
+		else if (Determine.canPlace(yours, enemys).length == 0) {
 			frame.board = board;
 			frame.finished = true;
 			if (board.blackNum > board.whiteNum)

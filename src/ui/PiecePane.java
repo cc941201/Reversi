@@ -10,11 +10,12 @@ import ai.Determine;
 public class PiecePane extends JPanel implements MouseListener {
 	private Coordinate c;
 	private Main frame;
-	public boolean focus = false, turn = false;
+	public boolean focus = false, turn = false, canPlace = false;
 	private static final Color halfBlackBlue = new Color(0x375E82),
 			halfWhiteBlue = new Color(0xBDD7F0), halfBlackRed = new Color(
 					0x9A4B49), halfWhiteRed = new Color(0xFFCAC9),
-			blue = new Color(0x4B89D0), red = new Color(0xFF6666);
+			blue = new Color(0x4B89D0), red = new Color(0xFF6666),
+			halfBlue = new Color(0x8B9FB8);
 
 	public PiecePane(Main frame, Coordinate c) {
 		this.c = c;
@@ -59,6 +60,8 @@ public class PiecePane extends JPanel implements MouseListener {
 		} else {
 			if (turn)
 				g.setColor(blue);
+			else if (canPlace)
+				g.setColor(halfBlue);
 			else
 				g.setColor(Color.lightGray);
 			g.fillRect(0, 0, width, height);
@@ -89,9 +92,11 @@ public class PiecePane extends JPanel implements MouseListener {
 		if (frame.controllable) {
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
-					if (frame.panel[i][j].turn || frame.panel[i][j].focus) {
+					if (frame.panel[i][j].turn || frame.panel[i][j].focus
+							|| frame.panel[i][j].canPlace) {
 						frame.panel[i][j].turn = false;
 						frame.panel[i][j].focus = false;
+						frame.panel[i][j].canPlace = false;
 						frame.panel[i][j].repaint();
 					}
 			boolean[][] yours, enemys;
@@ -106,6 +111,8 @@ public class PiecePane extends JPanel implements MouseListener {
 			if (pieces.length != 0) {
 				frame.controllable = false;
 				frame.infoWindow.undoButton.setEnabled(false);
+				if (!frame.network)
+					frame.history.add(frame);
 				frame.board.add(frame, c, yours, enemys, pieces);
 				if (frame.network)
 					try {

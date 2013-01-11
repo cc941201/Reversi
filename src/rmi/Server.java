@@ -44,9 +44,11 @@ public class Server extends UnicastRemoteObject implements Interface {
 		if (mouseEntered) {
 			for (int i = 0; i < 8; i++)
 				for (int j = 0; j < 8; j++)
-					if (frame.panel[i][j].turn || frame.panel[i][j].focus) {
+					if (frame.panel[i][j].turn || frame.panel[i][j].focus
+							|| frame.panel[i][j].canPlace) {
 						frame.panel[i][j].turn = false;
 						frame.panel[i][j].focus = false;
+						frame.panel[i][j].canPlace = false;
 						frame.panel[i][j].repaint();
 					}
 		} else
@@ -100,8 +102,15 @@ public class Server extends UnicastRemoteObject implements Interface {
 			frame.board = new Chessboard(map);
 		}
 		frame.network = true;
-		if (frame.networkHost == frame.networkHostBlack)
+		if (frame.networkHost == frame.networkHostBlack) {
+			Coordinate[] places = Determine.canPlace(frame.board.black,
+					frame.board.white);
+			for (int i = 0; i < places.length; i++) {
+				frame.panel[places[i].x][places[i].y].canPlace = true;
+				frame.panel[places[i].x][places[i].y].repaint();
+			}
 			frame.controllable = true;
+		}
 		if (!frame.finished)
 			frame.start();
 	}

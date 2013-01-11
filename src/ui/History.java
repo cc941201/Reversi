@@ -14,18 +14,22 @@ public class History {
 			frame.finished = false;
 			frame.winner = 0;
 			if (frame.invoke.blackIsHuman)
-				frame.board.turn=true;
+				frame.board.turn = true;
 			else
-				frame.board.turn=false;
+				frame.board.turn = false;
 		}
 		move--;
-		if (!frame.invoke.blackIsHuman || !frame.invoke.whiteIsHuman)
-			while (frame.board.turn != board[move].turn)
-				move--;
 		frame.board = board[move].clone();
 		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++)
+			for (int j = 0; j < 8; j++) {
+				if (frame.panel[i][j].turn || frame.panel[i][j].focus
+						|| frame.panel[i][j].canPlace) {
+					frame.panel[i][j].turn = false;
+					frame.panel[i][j].focus = false;
+					frame.panel[i][j].canPlace = false;
+				}
 				frame.panel[i][j].repaint();
+			}
 		frame.invoke.invoke(frame);
 	}
 }

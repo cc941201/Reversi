@@ -59,12 +59,20 @@ public class Determine {
 		return pieces;
 	}
 
-	public static int canMoveNum(boolean[][] yours, boolean[][] enemys) {
+	public static Coordinate[] canPlace(boolean[][] yours, boolean[][] enemys) {
 		int num = 0;
+		Coordinate[] temp = new Coordinate[64];
 		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++)
-				if (judge(new Coordinate(i, j), yours, enemys).length != 0)
+			for (int j = 0; j < 8; j++) {
+				Coordinate c = new Coordinate(i, j);
+				if (judge(c, yours, enemys).length != 0) {
+					temp[num] = c;
 					num++;
-		return num;
+				}
+			}
+		Coordinate[] places = new Coordinate[num];
+		for (int i = 0; i < num; i++)
+			places[i] = temp[i];
+		return places;
 	}
 }

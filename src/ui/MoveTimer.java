@@ -35,9 +35,9 @@ public class MoveTimer extends TimerTask {
 	private class Finish extends TimerTask {
 		@Override
 		public void run() {
-			if (Determine.canMoveNum(enemys, yours) != 0)
+			if (Determine.canPlace(enemys, yours).length != 0)
 				frame.board.turn = !frame.board.turn;
-			else if (Determine.canMoveNum(yours, enemys) == 0) {
+			else if (Determine.canPlace(yours, enemys).length == 0) {
 				frame.finished = true;
 				if (frame.board.blackNum > frame.board.whiteNum)
 					frame.winner = 1;
@@ -49,9 +49,22 @@ public class MoveTimer extends TimerTask {
 				if (frame.network)
 					frame.infoWindow.restartButton.setEnabled(true);
 			}
-			if (frame.network && !frame.finished
-					&& (frame.networkHostBlack == frame.board.turn))
+			if (frame.network
+					&& !frame.finished
+					&& ((frame.networkHost == frame.networkHostBlack) == frame.board.turn)) {
+				Coordinate[] places;
+				if (frame.board.turn)
+					places = Determine.canPlace(frame.board.black,
+							frame.board.white);
+				else
+					places = Determine.canPlace(frame.board.white,
+							frame.board.black);
+				for (int i = 0; i < places.length; i++) {
+					frame.panel[places[i].x][places[i].y].canPlace = true;
+					frame.panel[places[i].x][places[i].y].repaint();
+				}
 				frame.controllable = true;
+			}
 			frame.infoWindow.updateLabel(frame);
 			if (!frame.finished && !frame.network)
 				frame.invoke.invoke(frame);

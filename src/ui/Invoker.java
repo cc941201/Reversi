@@ -15,6 +15,12 @@ public class Invoker {
 					frame.infoWindow.undoButton.setEnabled(true);
 				frame.controllable = true;
 				frame.infoWindow.updateLabel(frame);
+				Coordinate[] places = Determine.canPlace(frame.board.black,
+						frame.board.white);
+				for (int i = 0; i < places.length; i++) {
+					frame.panel[places[i].x][places[i].y].canPlace = true;
+					frame.panel[places[i].x][places[i].y].repaint();
+				}
 			} else {
 				Coordinate move = blackPlayer.move(frame.board.black,
 						frame.board.white);
@@ -33,6 +39,11 @@ public class Invoker {
 				frame.infoWindow.undoButton.setEnabled(true);
 			frame.controllable = true;
 			frame.infoWindow.updateLabel(frame);
+			Coordinate[] places=Determine.canPlace(frame.board.white, frame.board.black);
+			for (int i=0;i<places.length;i++){
+				frame.panel[places[i].x][places[i].y].canPlace=true;
+				frame.panel[places[i].x][places[i].y].repaint();
+			}
 		} else {
 			Coordinate move = whitePlayer.move(frame.board.white,
 					frame.board.black);

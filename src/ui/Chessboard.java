@@ -18,8 +18,6 @@ public class Chessboard {
 
 	public void add(Main frame, Coordinate c, boolean[][] yours,
 			boolean[][] enemys, Coordinate[] pieces) {
-		if (!frame.network)
-			frame.history.add(frame);
 		yours[c.x][c.y] = true;
 		if (turn)
 			blackNum++;
