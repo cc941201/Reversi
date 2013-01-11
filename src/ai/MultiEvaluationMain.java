@@ -2,9 +2,9 @@ package ai;
 
 import ui.Coordinate;
 
-public class EvaluationMain implements AI {
+public class MultiEvaluationMain implements AI {
 
-	static int border = 1;
+	static int border = 5;
 	static int ansX = 0, ansY = 0;
 
 	public double search(boolean[][] yours, boolean[][] enemys, int times) {
