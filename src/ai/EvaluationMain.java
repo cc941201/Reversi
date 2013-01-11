@@ -11,7 +11,7 @@ public class EvaluationMain implements AI {
 		if (times == 0)
 			return 0;
 		if (Determine.canMoveNum(yours,enemys)==0){
-			return -9999999.99-search(enemys, yours, times - 1);
+			return (-9999999.99-search(enemys, yours, times - 1));
 		}
 		int current = EvaluationSituation.Score(yours, enemys);
 		int x, y;
@@ -89,7 +89,7 @@ public class EvaluationMain implements AI {
 			else {
 				if (!yours[tmpX][tmpY]) {
 					yours[tmpX][tmpY] = true;
-					max += search(enemys, yours, times - 1);
+					max -= search(enemys, yours, times - 1);
 					yours[tmpX][tmpY] = false;
 					return max;
 				} else{
