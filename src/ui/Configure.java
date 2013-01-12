@@ -4,7 +4,10 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Configure {
-	public static String[][] readAI() throws Exception {
+	public static String[] list, listName;
+	public static Object[][] listParameter;
+
+	public static void readAI() throws Exception {
 		FileReader in = new FileReader("AI.conf");
 		Scanner scan = new Scanner(in);
 		int num = 0;
@@ -19,18 +22,52 @@ public class Configure {
 		in.close();
 		in = new FileReader("AI.conf");
 		scan = new Scanner(in);
-		String[] list = new String[num + 1], listName = new String[num + 1];
+		list = new String[num + 1];
+		listName = new String[num + 1];
+		listParameter = new Object[num + 1][];
 		list[0] = "玩家";
 		for (int i = 1; i <= num; i++) {
 			list[i] = scan.nextLine();
 			listName[i] = scan.nextLine();
+			int index = listName[i].indexOf("(");
+			String parameter = listName[i].substring(index);
+			listName[i] = listName[i].substring(0, index);
+			if (parameter.length() == 2)
+				listParameter[i] = new Object[0];
+			else {
+				int position = 1, count = 0;
+				while ((position = parameter.indexOf(",", position)) > 0) {
+					position++;
+					count++;
+				}
+				position = 1;
+				listParameter[i] = new Object[count + 1];
+				for (int j = 0; j <= count; j++) {
+					int secondPosition;
+					if (j == count)
+						secondPosition = parameter.length() - 1;
+					else
+						secondPosition = parameter.indexOf(",", position + 1);
+					try {
+						listParameter[i][j] = Integer.parseInt(parameter
+								.substring(position, secondPosition));
+					} catch (Exception e) {
+						try {
+							listParameter[i][j] = Float.parseFloat(parameter
+									.substring(position, secondPosition));
+						} catch (Exception e1) {
+							listParameter[i][j] = parameter.substring(position,
+									secondPosition);
+						}
+					}
+					position = secondPosition + 1;
+				}
+			}
 			if (scan.hasNext())
 				scan.nextLine();
 		}
 		scan.close();
 		in.close();
-		String[][] conf = { list, listName };
-		return conf;
 	}
 
 	public static String[] readMapList() throws Exception {

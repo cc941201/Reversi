@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import com.jgoodies.forms.layout.*;
 import com.jgoodies.forms.factories.FormFactory;
+import java.lang.reflect.Constructor;
 import java.rmi.Naming;
 import java.rmi.registry.*;
 
@@ -20,7 +21,7 @@ public class ModeFrame extends JFrame {
 		setMinimumSize(new Dimension(360, 220));
 		setLocationRelativeTo(null);
 
-		final String[][] aiList = Configure.readAI();
+		Configure.readAI();
 		final String[] mapList = Configure.readMapList();
 
 		final JPanel mapPane = new JPanel();
@@ -76,7 +77,7 @@ public class ModeFrame extends JFrame {
 		JLabel blackLabel = new JLabel("黑方：");
 		blackPane.add(blackLabel, BorderLayout.WEST);
 
-		final JComboBox blackBox = new JComboBox(aiList[0]);
+		final JComboBox blackBox = new JComboBox(Configure.list);
 		blackLabel.setLabelFor(blackBox);
 		blackPane.add(blackBox);
 
@@ -88,7 +89,7 @@ public class ModeFrame extends JFrame {
 		JLabel whiteLabel = new JLabel("白方：");
 		whitePane.add(whiteLabel, BorderLayout.WEST);
 
-		final JComboBox whiteBox = new JComboBox(aiList[0]);
+		final JComboBox whiteBox = new JComboBox(Configure.list);
 		whiteLabel.setLabelFor(whiteBox);
 		whitePane.add(whiteBox);
 
@@ -144,16 +145,28 @@ public class ModeFrame extends JFrame {
 				try {
 					if (blackBox.getSelectedIndex() == 0)
 						frame.invoke.blackIsHuman = true;
-					else
-						frame.invoke.blackPlayer = (AI) Class.forName(
-								"ai." + aiList[1][blackBox.getSelectedIndex()])
-								.newInstance();
+					else {
+						Constructor<?>[] ctor = Class.forName(
+								"ai."
+										+ Configure.listName[blackBox
+												.getSelectedIndex()])
+								.getConstructors();
+						frame.invoke.blackPlayer = (AI) ctor[0]
+								.newInstance(Configure.listParameter[blackBox
+										.getSelectedIndex()]);
+					}
 					if (whiteBox.getSelectedIndex() == 0)
 						frame.invoke.whiteIsHuman = true;
-					else
-						frame.invoke.whitePlayer = (AI) Class.forName(
-								"ai." + aiList[1][whiteBox.getSelectedIndex()])
-								.newInstance();
+					else {
+						Constructor<?>[] ctor = Class.forName(
+								"ai."
+										+ Configure.listName[whiteBox
+												.getSelectedIndex()])
+								.getConstructors();
+						frame.invoke.whitePlayer = (AI) ctor[0]
+								.newInstance(Configure.listParameter[whiteBox
+										.getSelectedIndex()]);
+					}
 					ModeFrame.this.dispose();
 					frame.evaluate = evaluateBox.isSelected();
 					frame.start();

@@ -4,14 +4,18 @@ import ui.Coordinate;
 
 public class EvaluationMain implements AI {
 
-	static int border = 1;
+	int border;
 	static int ansX = 0, ansY = 0;
+
+	public EvaluationMain(int border) {
+		this.border = border;
+	}
 
 	public double search(boolean[][] yours, boolean[][] enemys, int times) {
 		if (times == 0)
 			return 0;
-		if (Determine.canPlace(yours,enemys).length==0){
-			return (-9999999.99-search(enemys, yours, times - 1));
+		if (Determine.canPlace(yours, enemys).length == 0) {
+			return (-9999999.99 - search(enemys, yours, times - 1));
 		}
 		int current = EvaluationSituation.Score(yours, enemys);
 		int x, y;
@@ -53,8 +57,10 @@ public class EvaluationMain implements AI {
 				int enemysGainATempo = EvaluationGainATempo.pass(enemys, yours);
 				gainATempo[x][y] = yourGainATempo - enemysGainATempo * 3;
 				value[x][y] = (double) deltaMobility[x][y]
-						* (64 - (double) current) / 4
-						+ (double) (deltaStableDiscs[x][y] * (6 * current * current - 16))
+						* (64 - (double) current)
+						/ 4
+						+ (double) (deltaStableDiscs[x][y] * (6 * current
+								* current - 16))
 						+ (double) deltaPotentialMobility[x][y]
 						* (double) (64 - current) / 12
 						+ (double) gainATempo[x][y] * 1250 + (double) gainNum
@@ -92,8 +98,8 @@ public class EvaluationMain implements AI {
 					max -= search(enemys, yours, times - 1);
 					yours[tmpX][tmpY] = false;
 					return max;
-				} else{
-					return -search(enemys, yours, times - 1)-9999999.99;
+				} else {
+					return -search(enemys, yours, times - 1) - 9999999.99;
 				}
 			}
 		}
@@ -101,23 +107,14 @@ public class EvaluationMain implements AI {
 
 	@Override
 	public Coordinate move(boolean[][] yours, boolean[][] enemys) {
-		boolean restoreYours[][] = new boolean[8][8];
-		boolean restoreEnemys[][] = new boolean[8][8];
-		int li, lj;
-		for (li = 0; li < 8; li++) {
-			for (lj = 0; lj < 8; lj++) {
-				restoreYours[li][lj] = yours[li][lj];
-				restoreEnemys[li][lj] = enemys[li][lj];
-			}
-		}
 		search(yours, enemys, border);
 		int tmX = ansX;
 		int tmY = ansY;
 		if ((yours[tmX][tmY])
 				|| (enemys[tmX][tmY])
 				|| (Determine.judge(new Coordinate(tmX, tmY), yours, enemys).length == 0)) {
-			for (li = 0; li < 8; li++) {
-				for (lj = 0; lj < 8; lj++) {
+			for (int li = 0; li < 8; li++) {
+				for (int lj = 0; lj < 8; lj++) {
 					if ((!yours[li][lj])
 							&& (!enemys[li][lj])
 							&& (Determine.judge(new Coordinate(li, lj), yours,
@@ -125,14 +122,9 @@ public class EvaluationMain implements AI {
 						ansX = li;
 						ansY = lj;
 					}
-					/*
-					 * if((restoreYours[li][lj]!=yours[li][lj])||(restoreEnemys[li
-					 * ][lj]!=enemys[li][lj])) System.out.println("Error");
-					 */
 				}
 			}
 		}
 		return new Coordinate(ansX, ansY);
 	}
-
 }
