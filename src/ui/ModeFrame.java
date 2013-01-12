@@ -167,14 +167,14 @@ public class ModeFrame extends JFrame {
 								.newInstance(Configure.listParameter[whiteBox
 										.getSelectedIndex()]);
 					}
-					ModeFrame.this.dispose();
-					frame.evaluate = evaluateBox.isSelected();
-					frame.start();
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "致命错误", "运行时错误",
+					JOptionPane.showMessageDialog(null, "配置文件错误", "错误",
 							JOptionPane.ERROR_MESSAGE);
 					System.exit(-1);
 				}
+				ModeFrame.this.dispose();
+				frame.evaluate = evaluateBox.isSelected();
+				frame.start();
 			}
 		});
 
