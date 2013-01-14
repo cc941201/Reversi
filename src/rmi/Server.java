@@ -12,7 +12,9 @@ public class Server extends UnicastRemoteObject implements Interface {
 	private String map;
 	private boolean mouseEntered;
 
-	public Server() throws Exception {
+	public Server(Main frame, String map) throws Exception {
+		this.frame = frame;
+		this.map = map;
 	}
 
 	@Override
@@ -113,12 +115,6 @@ public class Server extends UnicastRemoteObject implements Interface {
 		}
 		if (!frame.finished)
 			frame.start();
-	}
-
-	@Override
-	public void set(Main frame, String map) {
-		this.frame = frame;
-		this.map = map;
 	}
 
 	@Override

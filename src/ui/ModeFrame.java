@@ -185,8 +185,8 @@ public class ModeFrame extends JFrame {
 					if (frame.hostRegistry == null)
 						frame.hostRegistry = LocateRegistry
 								.createRegistry(1099);
-					frame.local = new Server();
-					frame.local.set(frame, mapList[mapBox.getSelectedIndex()]);
+					frame.local = new Server(frame, mapList[mapBox
+							.getSelectedIndex()]);
 					frame.hostRegistry.rebind("reversi", frame.local);
 					frame.networkHost = true;
 					ModeFrame.this.dispose();
@@ -205,8 +205,7 @@ public class ModeFrame extends JFrame {
 					if (frame.clientRegistry == null)
 						frame.clientRegistry = LocateRegistry
 								.createRegistry(1100);
-					frame.local = new Server();
-					frame.local.set(frame, null);
+					frame.local = new Server(frame, null);
 					frame.clientRegistry.rebind("reversi", frame.local);
 					final Interface call = (Interface) Naming.lookup("//"
 							+ addressField.getText() + "/reversi");

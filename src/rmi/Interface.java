@@ -14,8 +14,6 @@ public interface Interface extends Remote {
 	public void connect(boolean black, Interface remote, String map)
 			throws Exception;
 
-	public void set(Main frame, String map) throws Exception;
-
 	public void close() throws Exception;
 
 	public void restart() throws Exception;
