@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import com.jgoodies.forms.layout.*;
@@ -14,6 +15,8 @@ import rmi.*;
 
 @SuppressWarnings("serial")
 public class ModeFrame extends JFrame {
+	private boolean local = true;
+
 	public ModeFrame(final Main frame) throws Exception {
 		super("模式选择");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,7 +113,7 @@ public class ModeFrame extends JFrame {
 		blackBox.addActionListener(new evaluateListener());
 		whiteBox.addActionListener(new evaluateListener());
 
-		JButton startButton = new JButton("开始");
+		final JButton startButton = new JButton("开始");
 		getRootPane().setDefaultButton(startButton);
 		loaclPane.add(startButton, "1, 4");
 
@@ -137,7 +140,7 @@ public class ModeFrame extends JFrame {
 		addressLabel.setLabelFor(addressField);
 		addressPane.add(addressField);
 
-		JButton connectButton = new JButton("连接");
+		final JButton connectButton = new JButton("连接");
 		networkPane.add(connectButton, "1, 2, right, top");
 		startButton.addActionListener(new ActionListener() {
 			@Override
@@ -227,6 +230,17 @@ public class ModeFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, "连接服务器错误", "局域网模式错误",
 							JOptionPane.ERROR_MESSAGE);
 				}
+			}
+		});
+
+		tabbedPane.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				local = !local;
+				if (local)
+					getRootPane().setDefaultButton(startButton);
+				else
+					getRootPane().setDefaultButton(connectButton);
 			}
 		});
 
