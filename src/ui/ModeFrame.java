@@ -38,7 +38,7 @@ public class ModeFrame extends JFrame {
 		JLabel mapBoxLabel = new JLabel("地图：");
 		mapBoxPane.add(mapBoxLabel);
 
-		final JComboBox mapBox = new JComboBox(mapList);
+		final JComboBox<String> mapBox = new JComboBox<String>(mapList);
 		mapBoxLabel.setLabelFor(mapBox);
 		mapBoxPane.add(mapBox);
 		mapBox.addActionListener(new ActionListener() {
@@ -80,7 +80,7 @@ public class ModeFrame extends JFrame {
 		JLabel blackLabel = new JLabel("黑方：");
 		blackPane.add(blackLabel, BorderLayout.WEST);
 
-		final JComboBox blackBox = new JComboBox(Configure.list);
+		final JComboBox<String> blackBox = new JComboBox<String>(Configure.list);
 		blackLabel.setLabelFor(blackBox);
 		blackPane.add(blackBox);
 
@@ -92,7 +92,7 @@ public class ModeFrame extends JFrame {
 		JLabel whiteLabel = new JLabel("白方：");
 		whitePane.add(whiteLabel, BorderLayout.WEST);
 
-		final JComboBox whiteBox = new JComboBox(Configure.list);
+		final JComboBox<String> whiteBox = new JComboBox<String>(Configure.list);
 		whiteLabel.setLabelFor(whiteBox);
 		whitePane.add(whiteBox);
 
